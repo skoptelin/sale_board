@@ -12,7 +12,7 @@ $putUser    = new putUser();
 $deleteUser = new deleteUser();
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") { // Получить юзера с id = ... или всех юзеров
-    $getUser->readUser();
+    $getUser->getUser();
 
 } else if ($_SERVER["REQUEST_METHOD"] == "POST") { //Создать юзера если заполненны email, password, name
     $postUser->createUser();

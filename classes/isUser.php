@@ -14,14 +14,14 @@ class isUser {
         }
     }
 
-    function isUniq() { //Проверка является ли email уникальным
-        $query = DataBase::query("SELECT * FROM users WHERE `email` = '{$_POST["email"]}'");
+    function isUniq($sqlString) { //Проверка является ли email уникальным
+        $query = DataBase::query("SELECT * FROM users WHERE `email` = '{$sqlString}'");
         $user = [];
         while ($row = DataBase::fetch($query)){ 
             $user[] = $row;
         }
         if(!empty($user)) {
-            exit("Пользователь с email = " . $_POST["email"] . " уже существует");
+            exit("Пользователь с email = " . $sqlString . " уже существует");
         }
     }
 }
