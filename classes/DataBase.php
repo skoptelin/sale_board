@@ -7,8 +7,12 @@ class DataBase {
             self::$connection = mysqli_connect("localhost", "root", "", "sale_board");
         }
         if (!self::$connection) {
-            error_log ("Связь не установлена: " . mysqli_connect_error());
+            exit (error_log ("Связь не установлена: " . mysqli_connect_error()));
         }
+    }
+
+    static function getConnection() {
+        return self::$connection;
     }
 
     static function query($sqlString) {
