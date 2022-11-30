@@ -1,0 +1,99 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+input {
+    width: 400px;
+    height: 48px;
+
+    margin-bottom: 10px;
+
+    border: 1px solid #0EA5E9;
+}
+
+button {
+    width: 200px;
+    height: 36px;
+    margin-bottom: 20px;
+
+    background: #0EA5E9;
+    border: 1px solid #0EA5E9;
+    border-radius: 5px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+
+    color: #FFFFFF;
+}
+
+.header {
+    height: 60px;
+    line-height: 60px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+
+    background: #0EA5E9;
+
+    color: #FFFFFF;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loginText {
+    width: 40px;
+    height: 19px;
+    
+    margin-top: 275px;
+    margin-bottom: 50px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+
+    color: #0EA5E9;
+}
+
+.inputText {
+    width: auto;
+    height: 19px;
+    margin-bottom: 20px;
+
+    font-family: 'Inter';
+    font-style: italic;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+
+    color: #0EA5E9;
+}
+
+.regText {
+    width: 105px;
+    height: 19px;
+    
+    margin-top: 200px;
+    margin-bottom: 50px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+
+    color: #0EA5E9;
+}
