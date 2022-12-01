@@ -2,46 +2,59 @@
     app.loginPage = {
         draw: function() {
 
-            let content = document.createElement("div");
-            content.classList.add("content");
-            document.body.append(content);
+            let content = createContent();
 
-            let login = document.createElement("div");
-            login.classList.add("loginText");
-            login.append(document.createTextNode("Вход"));
+            let login = createText("loginText", "Вход");
 
-            let input1 = document.createElement("div");
+            let input1 = createInput("inputText", "E-mail");
+            
+            let input2 = createInput("inputText", "Пароль");
 
-            let inputEmail = document.createElement("input");
-            input1.append(inputEmail);
+            let loginButton = createButton("login", "Войти");
 
-            let input1Text = document.createElement("div");
-            input1Text.append(document.createTextNode("E-mail"));
-            input1Text.classList.add("inputText");
-            input1.append(input1Text);
-
-            let input2 = document.createElement("div");
-
-            let inputPass = document.createElement("input");
-            input2.append(inputPass);
-
-            let input2Text = document.createElement("div");
-            input2Text.append(document.createTextNode("Пароль"));
-            input2Text.classList.add("inputText");
-            input2.append(input2Text);
-
-            let loginButton = document.createElement("button");
-            loginButton.id = "login";
-            loginButton.append(document.createTextNode("Войти"));
-
-            let regButton = document.createElement("button");
-            regButton.id = "reg";
-            regButton.append(document.createTextNode("Зарегистрироваться"));
-
+            let regButton = createButton("reg", "Зарегистрироваться");
+            
             content.append(login, input1, input2, loginButton, regButton);
             
             regButton.addEventListener("click", goToRegister);
         }
+    }
+
+    function createContent(){
+        let content = document.createElement("div");
+        content.classList.add("content");
+        document.body.append(content);
+
+        return content;
+    }
+
+    function createText(className, textValue) {
+        let text = document.createElement("div");
+        text.classList.add(className);
+        text.append(document.createTextNode(textValue));
+
+        return text;
+    }
+    
+    function createInput(className, textValue) {
+        let input = document.createElement("div");
+
+        //Создание инпута под email
+        let inputCreate = document.createElement("input");
+        input.append(inputCreate);
+
+        //Создание текста под инпутом email
+        let inputText = createText(className, textValue);
+        input.append(inputText);
+
+        return input;
+    }
+
+    function createButton(id, text) {
+        let button = document.createElement("button");
+        button.id = id;
+        button.append(document.createTextNode(text));
+        return button;
     }
 
     function goToRegister() {

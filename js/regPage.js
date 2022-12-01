@@ -1,66 +1,65 @@
 (function(app) {
     app.regPage = {
         draw: function() {
-            let content = document.createElement("div");
-            content.classList.add("content");
-            document.body.append(content);
-
-            let reg = document.createElement("div");
-            reg.classList.add("regText");
-            reg.append(document.createTextNode("Регистрация"));
-
-            let input1 = document.createElement("div");
-
-            let inputEmail = document.createElement("input");
-            input1.append(inputEmail);
-
-            let input1Text = document.createElement("div");
-            input1Text.append(document.createTextNode("E-mail"));
-            input1Text.classList.add("inputText");
-            input1.append(input1Text);
-
-            let input2 = document.createElement("div");
-
-            let inputTel = document.createElement("input");
-            input2.append(inputTel);
-
-            let input2Text = document.createElement("div");
-            input2Text.append(document.createTextNode("Телефон"));
-            input2Text.classList.add("inputText");
-            input2.append(input2Text);
-
-            let input3 = document.createElement("div");
-
-            let inputPass = document.createElement("input");
-            input3.append(inputPass);
-
-            let input3Text = document.createElement("div");
-            input3Text.append(document.createTextNode("Пароль"));
-            input3Text.classList.add("inputText");
-            input3.append(input3Text);
             
-            let input4 = document.createElement("div");
+            let content = createContent();
 
-            let inputApplyPass = document.createElement("input");
-            input4.append(inputApplyPass);
+            let reg = createText("regText", "Регистрация");
 
-            let input4Text = document.createElement("div");
-            input4Text.append(document.createTextNode("Подтверждение пароля"));
-            input4Text.classList.add("inputText");
-            input4.append(input4Text);
+            let input1 = createInput("inputText", "E-mail");
 
-            let regButton = document.createElement("button");
-            regButton.id = "reg";
-            regButton.append(document.createTextNode("Зарегистрироваться"));
+            let input2 = createInput("inputText", "Телефон");
 
-            let loginButton = document.createElement("button");
-            loginButton.id = "login";
-            loginButton.append(document.createTextNode("Войти"));
+            let input3 = createInput("inputText", "Пароль");            
+            
+            let input4 = createInput("inputText", "Подтверждение пароля");
+
+            let regButton = createButton("reg", "Зарегистрироваться");
+
+            let loginButton = createButton("login", "Войти");
 
             content.append(reg, input1, input2, input3, input4, regButton, loginButton);
 
+            //Действие при нажатии на кнопку Войти
             loginButton.addEventListener("click", goToLogin);
         }
+    }
+
+    function createContent(){
+        let content = document.createElement("div");
+        content.classList.add("content");
+        document.body.append(content);
+
+        return content;
+    }
+
+    function createText(className, textValue) {
+        let text = document.createElement("div");
+        text.classList.add(className);
+        text.append(document.createTextNode(textValue));
+
+        return text;
+    }
+    
+    function createInput(className, textValue) {
+        let input = document.createElement("div");
+
+        //Создание инпута под email
+        let inputCreate = document.createElement("input");
+        input.append(inputCreate);
+
+        //Создание текста под инпутом email
+        let inputText = createText(className, textValue);
+        input.append(inputText);
+
+        return input;
+    }
+
+    function createButton(id, text) {
+        let button = document.createElement("button");
+        button.id = id;
+        button.append(document.createTextNode(text));
+        return button;
     }
 
     function goToLogin() {
