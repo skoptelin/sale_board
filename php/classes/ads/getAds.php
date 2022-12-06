@@ -24,7 +24,8 @@ class readAds extends exam{
             ON ads.user_id=users.id
             INNER JOIN statuses
             ON ads.status_id=statuses.id
-            WHERE ads.user_id = ?", $_GET["user_id"]); // Получение объявлений (-ия) по юзеру
+            WHERE ads.user_id = ?
+            ORDER BY ads.id DESC", $_GET["user_id"]); // Получение объявлений (-ия) по юзеру
     
         } else { 
             $this->getAll(); // Получить все строки со всеми объявлениями
@@ -49,11 +50,12 @@ class readAds extends exam{
     
     function getAll() {
         $query = DataBase::query("SELECT ads.id, ads.title, ads.discription, ads.picture, ads.price, ads.user_id, ads.city, users.name, users.avatar, users.phone_num, statuses.status_name, ads.created_at, ads.update_at 
-        FROM ads 
+        FROM ads
         INNER JOIN users 
         ON ads.user_id=users.id
         INNER JOIN statuses
-        ON ads.status_id=statuses.id");
+        ON ads.status_id=statuses.id
+        ORDER BY ads.id DESC");
         $ads = [];
         while ($row = DataBase::fetch($query)){
             $ads[] = $row;

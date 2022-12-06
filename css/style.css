@@ -97,3 +97,167 @@ button {
 
     color: #0EA5E9;
 }
+
+.adsList {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.adBox {
+    display: flex;
+
+    margin-bottom: 60px;
+}
+
+.fotoAndTel {
+    width: 150px;
+}
+
+.adImg {
+    height:150px;
+    width: 100%;
+    object-fit:cover;
+    
+    margin-bottom: 10px;
+}
+
+.adTel {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+
+    height: 30px;
+    width: 150px;
+    margin-bottom: 0;
+
+    background: #0EA5E9;
+    border: 1px solid #0EA5E9;
+    border-radius: 0;
+    
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+
+    color: #FFFFFF;
+}
+
+.adTelHidden {
+    display: none;
+}
+
+.adButton {
+    box-sizing: border-box;
+
+    height: 30px;
+    width: 150px;
+    margin-bottom: 0;
+
+    background: #0EA5E9;
+    border: 1px solid #0EA5E9;
+    border-radius: 0;
+    
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+
+    color: #FFFFFF;
+}
+
+.adButtonHidden {
+    display: none;
+}
+
+.detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 100%;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.adInfo {
+    display: flex;
+    justify-content: space-between;
+}
+
+.titleAndDiscription {
+
+    margin-bottom: 10px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+
+    color: #000000;
+}
+
+.title {
+    margin-bottom: 5px;
+}
+
+.adPrice {
+    display: flex;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+
+    color: #000000;
+}
+
+.priceValue {
+    margin-right: 5px;
+}
+
+.salesmanInfo {
+    display: flex;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+
+    color: #000000;
+}
+
+.salesmanTitle {
+    margin-right: 5px;
+}
+
+@media (max-width: 390px) {
+    .adBox {
+        flex-direction: column;
+    }
+
+    .fotoAndTel {
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 50px;
+    }
+
+    .adInfo {
+        flex-direction: column;
+    }
+
+    .titleAndDiscription {
+        margin-bottom: 10px;
+    }
+
+    .adPrice {
+        margin-bottom: 10px;
+    }
+}
