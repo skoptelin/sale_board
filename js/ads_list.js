@@ -95,8 +95,12 @@ addEventListener("DOMContentLoaded", function() {
 
     function showTelNum() {
         let str = `${this.id}`;
-        document.getElementById(str).classList.add("adButtonHidden");
-        document.getElementById("adTel" + str.slice(-1)).classList.remove("adTelHidden");
+        let hiddenButton = document.getElementById(str).classList.add("adButtonHidden");
+        let adTel = document.getElementById("adTel" + str.slice(-1));
+        adTel.classList.remove("adTelHidden");
+        if (adTel.textContent == "") {
+            adTel.innerHTML = "№ телефона не указан";
+        }
     }
 
     function formattingNum(numValue) { // Форматирование чисел: добавить пробелы между разрядами до точки или запятой
