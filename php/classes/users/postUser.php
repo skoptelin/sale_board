@@ -5,7 +5,7 @@ require_once("classes/users/exam.php");
 
 class postUser extends exam{
     function createUser() {
-        if(isset ($_POST["email"], $_POST["password"], $_POST["name"])){
+        if(!empty ($_POST["email"] && $_POST["password"] && $_POST["name"])){
 
             $this->isUniq($_POST["email"]);
 
@@ -32,12 +32,13 @@ class postUser extends exam{
             }
             $this->create("INSERT INTO users (`email`, `password`, `name`) VALUES ('{$_POST["email"]}', '{$_POST["password"]}', '{$_POST["name"]}')");
         } else {
-            echo "Заполните обязательные поля: email, пароль, имя";
+            echo json_encode("Заполните обязательные поля: email, пароль, имя");
         }
     }
 
     function create($sqlString){
         DataBase::query($sqlString);
-        exit("Пользователь " . $_POST["name"] . " создан");
+        echo json_encode("Пользователь " . $_POST["name"] . " создан");
+        exit;
     }
 }

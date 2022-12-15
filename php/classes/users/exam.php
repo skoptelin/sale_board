@@ -10,7 +10,8 @@ class exam {
             $user[] = $row;
         }
         if(empty($user)) {
-            exit("Пользователя с ID = " . $id . " не существует");
+            echo json_encode("Пользователя с ID = " . $id . " не существует");
+            exit;
         }
     }
 
@@ -21,7 +22,8 @@ class exam {
             $user[] = $row;
         }
         if(!empty($user)) {
-            exit("Пользователь с email = " . $email . " уже существует");
+            echo json_encode("Пользователь с email = " . $email . " уже существует");
+            exit;
         }
     }
 }

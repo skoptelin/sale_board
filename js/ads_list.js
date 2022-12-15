@@ -1,95 +1,78 @@
-let SaleBoard = {};
+let SaleBoard = {}
 addEventListener("DOMContentLoaded", function() {
     SaleBoard.Header.draw();
     SaleBoard.adsList.draw();
-    
-
 });
-
 
 (function(app) {
     app.adsList = {
         draw: function() {
+            createContent();
             createAdsList();
         }
     }
 
-    function createAdsList() { // Создание списка объявлений полученных с сервера
+    async function createAdsList() { // Создание списка объявлений полученных с сервера
+        try {
+            let response = await fetch("php/ads.php", {
+                method: "GET"
+            });
+            let json = await response.json();
     
-        fetch("php/ads.php", {
-            method: "GET"
-        })
-        .then(respose => respose.json())
-        .then(jsonObject => {
-            for(let i = 0; i < jsonObject.length; i++) {
-                let arr = jsonObject[i];
-
-                createAd(i);
-                let adImg = document.getElementById("adImg" + i);
-                let adTel = document.getElementById("adTel" + i);
-                let title = document.getElementById("title" + i);
-                let discription = document.getElementById("discription" + i);
-                let salesmanValue = document.getElementById("salesmanValue" + i);
-                let priceValue = document.getElementById("priceValue" + i);
-
-                adImg.src = arr.picture;
-                adTel.innerHTML = arr.phone_num;
-                title.innerHTML = arr.title;
-                discription.innerHTML = arr.discription;
-                salesmanValue.innerHTML = arr.name;
-                priceValue.innerHTML = formattingNum(arr.price);
+            for(let i = 0; i < json.length; i++) {
+                let arr = json[i];
+    
+                createAd(i, arr.picture, arr.phone_num, arr.title, arr.discription, arr.name, arr.price);
             }
-
-            let buttons = document.querySelectorAll(".adButton"); // Находим все кнопки на странице
+    
+            let buttons = document.querySelectorAll(".adButton"); // Находим все кнопки объявлений на странице
+    
             for(let i = 0; i < buttons.length; i++){ // Навешиваем на каждую кнопку EventListener для для показа номера телефона
                 buttons[i].addEventListener('click', showTelNum);
             }
-        })
+        }
+        catch (e) {
+            alert("Упс, что-то пошло не так! Ошибка: " + e.name.value);
+        }
         
     }
 
-    function createAd(i) {
+    function createAd(i, picture, phone_num, titleValue, discriptionValue, nameValue, price) {
+        let content       = document.querySelector(".adsList");
 
-        let content = createContent();
+        let adBox         = addElement("div", "adBox", i, content);
 
-        let adBox = addElement("div", "adBox", i, content);
+        let fotoAndTel    = addElement("div", "fotoAndTel", i, adBox);
 
-        let fotoAndTel = addElement("div", "fotoAndTel", i, adBox);
-        
-        let adImg = addElement("img", "adImg", i, fotoAndTel);
+        let adImg         = addElement("img", "adImg", i, fotoAndTel);
+        adImg.src         = picture;
 
-        let adTel = addElement("div", "adTel", i, fotoAndTel);
+        let adTel         = addElement("div", "adTel", i, fotoAndTel);
         adTel.classList.add("adTelHidden");
+        adTel.innerHTML   = phone_num;
      
-        let adButton = createButton("adButton", i, "Показать телефон");
+        let adButton      = createButton("adButton", i, "Показать телефон");
         fotoAndTel.append(adButton);
 
-        let detail = addElement("div", "detail", i, adBox);
-
-        let adInfo = addElement("div", "adInfo", i, detail);
-
+        let detail        = addElement("div", "detail", i, adBox);
+        let adInfo        = addElement("div", "adInfo", i, detail);
         let titleAndDiscr = addElement("div", "titleAndDiscription", i, adInfo);
-
-        let title = createText("title", i, "Lorem ipsum dolor sit amet");
+        let title         = createText("title", i, titleValue);
         titleAndDiscr.append(title);
-
-        let discription = createText("discription", i, "Lorem ipsum dolor sit amet consectetur adipisicing elit. In explicabo atque omnis facere veniam voluptatibus ipsa qui, libero perspiciatis aliquam illum numquam deleniti adipisci rerum modi fugit cumque fugiat laborum?");
+        let discription   = createText("discription", i, discriptionValue);
         titleAndDiscr.append(discription);
 
-        let adPrice = addElement("div", "adPrice", i, adInfo);
-
-        let priceValue = createText("priceValue", i, "3000");
+        let adPrice       = addElement("div", "adPrice", i, adInfo);
+        let priceValue    = createText("priceValue", i, formattingNum(price));
         adPrice.append(priceValue);
-
-        let currency = createText("currency", i, "₽");
+        let currencyValue = "₽";
+        let currency      = createText("currency", i, currencyValue);
         adPrice.append(currency);
 
-        let salesmanInfo = addElement("div", "salesmanInfo", i, detail);
-        
+        let salesmanInfo  = addElement("div", "salesmanInfo", i, detail);
         let salesmanTitle = createText("salesmanTitle", i, "Продавец: ");
         salesmanInfo.append(salesmanTitle);
-
-        let salesmanValue = createText("salesmanValue", i, "Lorem, ipsum.");
+        let salesmanValue = createText("salesmanValue", i, nameValue);
         salesmanInfo.append(salesmanValue);
     }
 
