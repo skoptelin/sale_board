@@ -38,7 +38,7 @@ class postUser extends exam{
 
     function create($sqlString){
         DataBase::query($sqlString);
-        echo json_encode("Пользователь " . $_POST["name"] . " создан");
+        echo json_encode("true");
         exit;
     }
 }

@@ -1,22 +1,45 @@
 (function(app) {
     app.loginPage = {
         draw: function() {
+            createLoginPage();
+        }
+    }
 
-            let content = createContent();
+    function createLoginPage() {
+        let content     = createContent();
+        let login       = createText("loginText", "Вход");
+        let input1      = createInput("inputText", "email", "E-mail");
+        let input2      = createInput("inputText", "password", "Пароль");
+        let loginButton = createButton("login", "Войти");
+        let regButton   = createButton("reg", "Зарегистрироваться");
+        
+        content.append(login, input1, input2, loginButton, regButton);
 
-            let login = createText("loginText", "Вход");
+        let password = document.getElementById("password");
+        password.type = "password";
+        
+        regButton.addEventListener("click", goToRegister);
+        loginButton.addEventListener("click", auth);
+    }
 
-            let input1 = createInput("inputText", "E-mail");
-            
-            let input2 = createInput("inputText", "Пароль");
+    async function auth() {
 
-            let loginButton = createButton("login", "Войти");
+        let user = new FormData();
+        user.set("email", document.getElementById("email").value);
+        user.set("password", document.getElementById("password").value);
 
-            let regButton = createButton("reg", "Зарегистрироваться");
-            
-            content.append(login, input1, input2, loginButton, regButton);
-            
-            regButton.addEventListener("click", goToRegister);
+        let auth = await fetch("php/auth.php", {
+            method: "POST",
+            body: user
+        });
+        let response = await auth.json();
+
+        if (response == "true") {
+            goToAdsList();
+        } else if(response == "false") {
+            alert("Неверный логин или пароль");
+        } else if(response == "data empty") {
+            alert("Введите логин и пароль");
         }
     }
 
@@ -36,14 +59,13 @@
         return text;
     }
     
-    function createInput(className, textValue) {
+    function createInput(className, id, textValue) {
         let input = document.createElement("div");
 
-        //Создание инпута под email
         let inputCreate = document.createElement("input");
+        inputCreate.id = id;
         input.append(inputCreate);
 
-        //Создание текста под инпутом email
         let inputText = createText(className, textValue);
         input.append(inputText);
 
@@ -60,5 +82,10 @@
     function goToRegister() {
         document.querySelector(".content").parentNode.removeChild(document.querySelector(".content"));
         app.regPage.draw();
+    }
+
+    function goToAdsList() {
+        document.querySelector(".content").parentNode.removeChild(document.querySelector(".content"));
+        app.adsList.draw();
     }
 })(SaleBoard);

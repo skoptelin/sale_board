@@ -1,9 +1,3 @@
-let SaleBoard = {}
-addEventListener("DOMContentLoaded", function() {
-    SaleBoard.Header.draw();
-    SaleBoard.adsList.draw();
-});
-
 (function(app) {
     app.adsList = {
         draw: function() {

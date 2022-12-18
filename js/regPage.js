@@ -18,29 +18,32 @@
             body: user
         });
         let response = await create.json();
-        let message = await alert(JSON.stringify(response));
+
+        if (response == "true") {
+            alert("Пользователь " + document.getElementById("name").value + " создан");
+            goToLogin();
+        } else {
+            let message = alert(JSON.stringify(response));
+        }
+        
     }
 
     function minInputPassValue() {
         let strPass = document.getElementById("password");
         let minPassLenght = 8;
-        /* strPass.oninput = function() { */
-            if (strPass.value.length < minPassLenght) {
-                alert("Пароль слишком короткий");
-                
-            } else {
-                applyPassword();
-            }
+        if (strPass.value.length < minPassLenght) {
+            alert("Пароль слишком короткий");           
+        } else {
+            applyPassword();
+        }
         
     }
 
     function applyPassword() {
         let password = document.getElementById("password");
         let applyPassword = document.getElementById("applyPassword");
-
         if(password.value == applyPassword.value) {
             createUser();
-            setTimeout(goToLogin, 5000);
         } else {
             alert("Подтверждение не совпадает с паролем");
         }
@@ -61,6 +64,7 @@
 
         let password       = document.getElementById("password");
         let applyPassword  = document.getElementById("applyPassword");
+        let telNum         = document.getElementById("phone_num");
         password.type      = "password";
         applyPassword.type = "password";
 
@@ -70,7 +74,8 @@
         //Действие при нажатии на кнопку Зарегистрироваться
         regButton.addEventListener("click", minInputPassValue);
 
-        /* password.addEventListener("keypress", minInputPassValue); */
+        //Действие при получении фокуса на инпут телефона
+        telNum.addEventListener("focus", createTelPrefix);
     }
 
     function createContent(){
@@ -92,13 +97,10 @@
     function createInput(className, id, textValue) {
         let input = document.createElement("div");
 
-        //Создание инпута под email
         let inputCreate = document.createElement("input");
         inputCreate.id = id;
         input.append(inputCreate);
 
-
-        //Создание текста под инпутом email
         let inputText = createText(className, textValue);
         input.append(inputText);
 
@@ -110,6 +112,10 @@
         button.id = id;
         button.append(document.createTextNode(text));
         return button;
+    }
+
+    function createTelPrefix() {
+        document.getElementById("phone_num").value = "+7";
     }
 
     function goToLogin() {

@@ -8,7 +8,8 @@ class getUser extends exam {
     
         $query = DataBase::query($sqlString);
         $user = [];
-        while ($user[] = DataBase::fetch($query)){ 
+        while ($row = DataBase::fetch($query)){ 
+            $user[] = $row;
         }
         echo json_encode($user);
     }
@@ -27,6 +28,19 @@ class getUser extends exam {
             }
             echo json_encode($user);
         
+        } elseif (isset($_GET["email"])) { // Получить строку с данными юзера с email = ...
+            $this->isUser($_GET["email"]);
+
+            $statement = mysqli_prepare(DataBase::getConnection(), "SELECT * FROM users WHERE email = ?"); // Защита от sql инъекции
+            mysqli_stmt_bind_param($statement, "s", $_GET["email"]);
+            mysqli_stmt_execute($statement);
+            $query = mysqli_stmt_get_result($statement);
+            
+            $user = [];
+            while ($user[] = DataBase::fetch($query)){ 
+            }
+            echo json_encode($user);
+
         } else { // Получить все строки со всеми юзерами
 
             $this->findUser("SELECT * FROM users");
