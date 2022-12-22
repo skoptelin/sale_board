@@ -86,6 +86,7 @@
 
     function goToAdsList() {
         document.querySelector(".content").parentNode.removeChild(document.querySelector(".content"));
+        SaleBoard.createNav.draw();
         app.adsList.draw();
     }
 })(SaleBoard);

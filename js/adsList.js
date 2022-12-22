@@ -32,6 +32,7 @@
     }
 
     function createAd(i, picture, phone_num, titleValue, discriptionValue, nameValue, price) {
+        
         let content       = document.querySelector(".adsList");
 
         let adBox         = addElement("div", "adBox", i, content);

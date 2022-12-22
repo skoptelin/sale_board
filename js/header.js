@@ -6,7 +6,11 @@
             header.classList.add("header");
             document.body.append(header);
 
-            document.querySelector(".header").append(document.createTextNode("GoodSale.ru"));
+            let name = document.createElement("div");
+            name.classList.add("headerText");
+            header.append(name);
+            let nameText = document.createTextNode("GoodSale.ru");
+            name.append(nameText);
         }
     }
 })(SaleBoard);
