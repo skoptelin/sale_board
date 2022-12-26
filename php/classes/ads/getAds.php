@@ -17,6 +17,7 @@ class readAds extends exam{
             WHERE ads.id = ?;", $_GET["id"]); // Получить строку с данными объявления с id = ... и данными юзера
         
         } else if(isset($_GET["user_id"])) { 
+            $_GET["user_id"] = $_SESSION["user"];
             $this->isAdsByUser($_GET["user_id"]);// Проверка есть ли объявления у этого юзер id
             $this->get("SELECT ads.id, ads.title, ads.discription, ads.picture, ads.price, ads.user_id, ads.city, users.name, users.avatar, users.phone_num, statuses.status_name, ads.created_at, ads.update_at 
             FROM ads 

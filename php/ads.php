@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 require_once("classes/connect.php");
 require_once("classes/DataBase.php");
 require_once("classes/ads/getAds.php");

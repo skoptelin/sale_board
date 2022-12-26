@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 require_once("classes/connect.php");
 require_once("classes/DataBase.php");
 
@@ -10,7 +13,9 @@ if (!empty($_POST["email"] && $_POST["password"])) {
     while ($row = DataBase::fetch($query)){ 
         $user[] = $row;
     }
+
     if (!empty($user)){
+        $_SESSION["user"] = $user[0]["id"];
         echo json_encode("true");
     } else {
         echo json_encode("false");

@@ -35,7 +35,17 @@
         let navItemExit = createLink("navItem", "Выход", navList);
 
         navItemAllAds.addEventListener("click", goToAdsList);
+        navItemMyAds.addEventListener("click", goToMyAdsList);
+        navItemExit.addEventListener("click", logout);
         burgerButton.addEventListener("click", showHideNav);
+    }
+
+    async function logout() {
+        await fetch("php/logout.php");
+        document.querySelector(".header").parentNode.removeChild(document.querySelector(".header"));
+        document.querySelector(".container").parentNode.removeChild(document.querySelector(".container"));
+        app.Header.draw();
+        app.loginPage.draw();
     }
 
     function showHideNav() {
@@ -64,6 +74,11 @@
     function goToAdsList() {
         document.querySelector(".adsList").parentNode.removeChild(document.querySelector(".adsList"));
         app.adsList.draw();
+    }
+
+    function goToMyAdsList() {
+        document.querySelector(".adsList").parentNode.removeChild(document.querySelector(".adsList"));
+        app.myAdsList.draw();
     }
 
 })(SaleBoard);

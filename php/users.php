@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 require_once("classes/connect.php");
 require_once("classes/users/getUser.php");
 require_once("classes/users/postUser.php");

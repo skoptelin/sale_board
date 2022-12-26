@@ -7,28 +7,28 @@
 
     function createLoginPage() {
         let content     = createContent();
-        let login       = createText("loginText", "Вход");
+        let loginText   = createText("loginText", "Вход");
         let input1      = createInput("inputText", "email", "E-mail");
         let input2      = createInput("inputText", "password", "Пароль");
         let loginButton = createButton("login", "Войти");
         let regButton   = createButton("reg", "Зарегистрироваться");
         
-        content.append(login, input1, input2, loginButton, regButton);
+        content.append(loginText, input1, input2, loginButton, regButton);
 
-        let password = document.getElementById("password");
-        password.type = "password";
+        let password    = document.getElementById("password");
+        password.type   = "password";
         
         regButton.addEventListener("click", goToRegister);
-        loginButton.addEventListener("click", auth);
+        loginButton.addEventListener("click", login);
     }
 
-    async function auth() {
+    async function login() {
 
         let user = new FormData();
         user.set("email", document.getElementById("email").value);
         user.set("password", document.getElementById("password").value);
 
-        let auth = await fetch("php/auth.php", {
+        let auth = await fetch("php/login.php", {
             method: "POST",
             body: user
         });

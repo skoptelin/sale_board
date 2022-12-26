@@ -1,14 +1,15 @@
 (function(app) {
-    app.adsList = {
+    app.myAdsList = {
         draw: function() {
-            createContent();
             createAdsList();
+            createAddButton();
+            createMyAds();
         }
     }
 
-    async function createAdsList() { // Создание списка объявлений полученных с сервера
+    async function createMyAds() { // Создание списка объявлений полученных с сервера
         try {
-            let response = await fetch("php/ads.php", {
+            let response = await fetch("php/ads.php?user_id=N", {
                 method: "GET"
             });
             let json = await response.json();
@@ -16,14 +17,9 @@
             for(let i = 0; i < json.length; i++) {
                 let arr = json[i];
     
-                createAd(i, arr.picture, arr.phone_num, arr.title, arr.discription, arr.name, arr.price);
+                createAd(i, arr.picture, arr.title, arr.discription, arr.price);
             }
     
-            let buttons = document.querySelectorAll(".adButton"); // Находим все кнопки объявлений на странице
-    
-            for(let i = 0; i < buttons.length; i++){ // Навешиваем на каждую кнопку EventListener для для показа номера телефона
-                buttons[i].addEventListener('click', showTelNum);
-            }
         }
         catch (e) {
             alert("Упс, что-то пошло не так! Ошибка: " + e.name.value);
@@ -31,23 +27,14 @@
         
     }
 
-    function createAd(i, picture, phone_num, titleValue, discriptionValue, nameValue, price) {
+    function createAd(i, picture, titleValue, discriptionValue, price) {
         
-        let content       = document.querySelector(".adsList");
+        let content       = document.querySelector(".myAdsList");
 
         let adBox         = addElement("div", "adBox", i, content);
 
-        let fotoAndTel    = addElement("div", "fotoAndTel", i, adBox);
-
-        let adImg         = addElement("img", "adImg", i, fotoAndTel);
+        let adImg         = addElement("img", "myAdImg", i, adBox);
         adImg.src         = picture;
-
-        let adTel         = addElement("div", "adTel", i, fotoAndTel);
-        adTel.classList.add("adTelHidden");
-        adTel.innerHTML   = phone_num;
-     
-        let adButton      = createButton("adButton", i, "Показать телефон");
-        fotoAndTel.append(adButton);
 
         let detail        = addElement("div", "detail", i, adBox);
         let adInfo        = addElement("div", "adInfo", i, detail);
@@ -58,27 +45,20 @@
         titleAndDiscr.append(discription);
 
         let adPrice       = addElement("div", "adPrice", i, adInfo);
-        let priceValue    = createText("priceValue", i, formattingNum(price));
+        let priceValue    = createText("priceValue", i, formattingNum(price)); /* price */
         adPrice.append(priceValue);
         let currencyValue = "₽";
         let currency      = createText("currency", i, currencyValue);
         adPrice.append(currency);
 
-        let salesmanInfo  = addElement("div", "salesmanInfo", i, detail);
-        let salesmanTitle = createText("salesmanTitle", i, "Продавец: ");
-        salesmanInfo.append(salesmanTitle);
-        let salesmanValue = createText("salesmanValue", i, nameValue);
-        salesmanInfo.append(salesmanValue);
+        let buttons = addElement("div", "buttons", i, detail);
+        let buttonChange = createButton("buttonChange", i, "Изменить", buttons);
+        let buttonDelete = createButton("buttonDelete", i, "Удалить", buttons);
     }
 
-    function showTelNum() {
-        let str = `${this.id}`;
-        let hiddenButton = document.getElementById(str).classList.add("adButtonHidden");
-        let adTel = document.getElementById("adTel" + str.slice(-1));
-        adTel.classList.remove("adTelHidden");
-        if (adTel.textContent == "") {
-            adTel.innerHTML = "№ телефона не указан";
-        }
+    function createAddButton() {
+        let addButtonBox = addElement("div", "addButton", "", document.querySelector(".adsList"));
+        createButton("addButton", "", "Добавить", addButtonBox);
     }
 
     function formattingNum(numValue) { // Форматирование чисел: добавить пробелы между разрядами до точки или запятой
@@ -92,9 +72,9 @@
         }
     }
 
-    function createContent(){
+    function createAdsList(){
         let content = document.createElement("div");
-        content.classList.add("adsList", "container");
+        content.classList.add("myAdsList", "adsList", "container");
         document.body.append(content);
     }
 
@@ -116,11 +96,13 @@
         return text;
     }
 
-    function createButton(id, i, text) {
+    function createButton(id, i, text, whereToAdd) {
         let button = document.createElement("button");
         button.id = id + i;
-        button.classList.add("adButton");
+        button.classList.add("myAdButton");
         button.append(document.createTextNode(text));
+        whereToAdd.append(button);
+
         return button;
     }
 

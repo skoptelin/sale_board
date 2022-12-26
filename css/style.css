@@ -165,11 +165,15 @@ a:visited, a:focus, a:hover, a:active {
     color: #0EA5E9;
 }
 
-.adsList {
+.adsList, .myAdsList{
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 100px;
     margin-bottom: 40px;
+}
+
+.myAdsList {
+    margin-top: 50px;
 }
 
 .adBox {
@@ -182,12 +186,16 @@ a:visited, a:focus, a:hover, a:active {
     width: 150px;
 }
 
-.adImg {
+.adImg, .myAdImg {
     height:150px;
-    width: 100%;
+    width: 150px;
     object-fit:cover;
     
     margin-bottom: 10px;
+}
+
+.myAdImg {
+    margin-bottom: 0;
 }
 
 .adTel {
@@ -199,11 +207,7 @@ a:visited, a:focus, a:hover, a:active {
     height: 30px;
     width: 150px;
     margin-bottom: 0;
-
-/*     background: #0EA5E9;
-    border: 1px solid #0EA5E9;
-    border-radius: 0; */
-    
+   
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
@@ -217,7 +221,7 @@ a:visited, a:focus, a:hover, a:active {
     display: none;
 }
 
-.adButton {
+.adButton, .myAdButton {
     box-sizing: border-box;
 
     height: 30px;
@@ -237,8 +241,26 @@ a:visited, a:focus, a:hover, a:active {
     color: #FFFFFF;
 }
 
+.myAdButton:not(:last-child) {
+    margin-right: 20px;
+}
+
 .adButtonHidden {
     display: none;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.addButton {
+    display: flex;
+    justify-content: end;
+
+    margin-top: 80px;
+    margin-bottom: 50px;
+
 }
 
 .detail {
@@ -354,7 +376,7 @@ a:visited, a:focus, a:hover, a:active {
         flex-direction: column;
     }
 
-    .fotoAndTel {
+    .fotoAndTel, .myAdImg {
         margin-left: auto;
         margin-right: auto;
         margin-bottom: 50px;
@@ -371,4 +393,19 @@ a:visited, a:focus, a:hover, a:active {
     .adPrice {
         margin-bottom: 10px;
     }
+
+    .addButton {
+        justify-content: center;
+    }
+
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .myAdButton:not(:last-child) {
+        margin-bottom: 15px;
+        margin-right: 0;
+    }
 }
+
