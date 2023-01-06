@@ -7,9 +7,11 @@ class deleteAd extends exam{
         if(isset($_GET["id"])) {
             $this->isAds($_GET["id"]);
             DataBase::query("DELETE FROM ads WHERE id = {$_GET["id"]}");
-            echo "Объявление с ID = " . $_GET["id"] . " удалено";
+            $answer = "true";
+            echo json_encode($answer);
         } else {
-            echo "Укажите ID объявления";
+            $answer = "false";
+            echo json_encode($answer);
         }
     }
 }

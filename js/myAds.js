@@ -13,13 +13,25 @@
                 method: "GET"
             });
             let json = await response.json();
+            
+            if (json != "false") {
+                for(let i = 0; i < json.length; i++) {
+                    let arr = json[i];
+        
+                    createAd(i, arr.id, arr.picture, arr.title, arr.discription, arr.price);
+                }
     
-            for(let i = 0; i < json.length; i++) {
-                let arr = json[i];
-    
-                createAd(i, arr.picture, arr.title, arr.discription, arr.price);
+                let buttonDelete = document.querySelectorAll(".buttonDelete");
+                let buttonUpdate = document.querySelectorAll(".buttonChange");
+                
+                for(let i = 0; i < buttonDelete.length; i++){
+                    buttonDelete[i].addEventListener("click", deleteAd);
+                    buttonUpdate[i].addEventListener("click", goToUpdatePage);
+                }
+            } else {
+                emptyAdsList();
             }
-    
+            
         }
         catch (e) {
             alert("Упс, что-то пошло не так! Ошибка: " + e.name.value);
@@ -27,7 +39,25 @@
         
     }
 
-    function createAd(i, picture, titleValue, discriptionValue, price) {
+    async function deleteAd() {
+        let str = `${this.id}`;
+        let id = document.getElementById("id" + str.slice(-1));
+        
+        let response = await fetch("php/ads.php?id=" + id.textContent, {
+            method: "DELETE"
+        });
+        let answer = await response.json();
+
+        if (answer == "true") {
+            alert("Объявление " + document.getElementById("title" + str.slice(-1)).textContent + " удалено");
+            goToMyAdsList();    
+        } else {
+            alert("Error");
+        }
+
+    }
+
+    function createAd(i, id, picture, titleValue, discriptionValue, price) {
         
         let content       = document.querySelector(".myAdsList");
 
@@ -37,6 +67,10 @@
         adImg.src         = picture;
 
         let detail        = addElement("div", "detail", i, adBox);
+
+        let idText        = createText("id", i, id);
+        detail.append(idText);
+
         let adInfo        = addElement("div", "adInfo", i, detail);
         let titleAndDiscr = addElement("div", "titleAndDiscription", i, adInfo);
         let title         = createText("title", i, titleValue);
@@ -45,20 +79,28 @@
         titleAndDiscr.append(discription);
 
         let adPrice       = addElement("div", "adPrice", i, adInfo);
-        let priceValue    = createText("priceValue", i, formattingNum(price)); /* price */
+        let priceValue    = createText("priceValue", i, formattingNum(price));
         adPrice.append(priceValue);
         let currencyValue = "₽";
         let currency      = createText("currency", i, currencyValue);
         adPrice.append(currency);
 
         let buttons = addElement("div", "buttons", i, detail);
-        let buttonChange = createButton("buttonChange", i, "Изменить", buttons);
-        let buttonDelete = createButton("buttonDelete", i, "Удалить", buttons);
+        let buttonChange = createButton("buttonChange", "buttonChange", i, "Изменить", buttons);
+        let buttonDelete = createButton("buttonDelete", "buttonDelete", i, "Удалить", buttons);
+    }
+
+    function emptyAdsList() {
+        let content       = document.querySelector(".myAdsList");
+        let description   = createText("emptyMyAdsListText", "", "У вас пока нет объявлений");
+        content.append(description);
     }
 
     function createAddButton() {
         let addButtonBox = addElement("div", "addButton", "", document.querySelector(".adsList"));
-        createButton("addButton", "", "Добавить", addButtonBox);
+        let addButton = createButton("addButton", "myAdButton", "", "Добавить", addButtonBox);
+
+        addButton.addEventListener("click", goToCreateAd);
     }
 
     function formattingNum(numValue) { // Форматирование чисел: добавить пробелы между разрядами до точки или запятой
@@ -96,14 +138,36 @@
         return text;
     }
 
-    function createButton(id, i, text, whereToAdd) {
+    function createButton(id, className, i, text, whereToAdd) {
         let button = document.createElement("button");
         button.id = id + i;
-        button.classList.add("myAdButton");
+        button.classList.add(className);
         button.append(document.createTextNode(text));
         whereToAdd.append(button);
 
         return button;
+    }
+
+    function goToMyAdsList() {
+        document.querySelector(".adsList").parentNode.removeChild(document.querySelector(".adsList"));
+        app.myAdsList.draw();
+    }
+
+    function goToCreateAd() {
+        document.querySelector(".container").parentNode.removeChild(document.querySelector(".container"));
+        app.createAd.draw();
+    }
+
+    function goToUpdatePage() {
+        let str         = `${this.id}`;
+        let id          = document.getElementById("id" + str.slice(-1)).textContent;
+        let title       = document.getElementById("title" + str.slice(-1)).textContent;
+        let description = document.getElementById("discription" + str.slice(-1)).textContent;
+        let price       = document.getElementById("priceValue" + str.slice(-1)).textContent;
+        let picture     = document.getElementById("myAdImg" + str.slice(-1)).src;
+        
+        document.querySelector(".container").parentNode.removeChild(document.querySelector(".container"));
+        app.updateAd.draw(id, title, description, price, picture);
     }
 
 })(SaleBoard);

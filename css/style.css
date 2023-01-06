@@ -72,6 +72,18 @@ button {
     color: #FFFFFF; 
 }
 
+.navItemSelected {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration-line: underline;
+
+    margin-right: 30px;
+
+    color: #FFFFFF;
+}
+
 .navItem:not(:last-child) {
     margin-right: 30px;
 }
@@ -186,7 +198,7 @@ a:visited, a:focus, a:hover, a:active {
     width: 150px;
 }
 
-.adImg, .myAdImg {
+.adImg, .myAdImg, .imgCreateAd, .imgUpdateAd {
     height:150px;
     width: 150px;
     object-fit:cover;
@@ -221,7 +233,7 @@ a:visited, a:focus, a:hover, a:active {
     display: none;
 }
 
-.adButton, .myAdButton {
+.adButton, .myAdButton, .buttonDelete, .buttonChange, .inputUploadLabel, .inputUpload, .buttonSave {
     box-sizing: border-box;
 
     height: 30px;
@@ -241,7 +253,17 @@ a:visited, a:focus, a:hover, a:active {
     color: #FFFFFF;
 }
 
-.myAdButton:not(:last-child) {
+.inputUploadLabel, .inputSave {
+    margin-bottom: 20px;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.inputUpload {
+    visibility: hidden;
+}
+
+.buttonChange {
     margin-right: 20px;
 }
 
@@ -270,6 +292,10 @@ a:visited, a:focus, a:hover, a:active {
 
     width: 100%;
     margin-left: 15px;
+}
+
+.id {
+    display: none;
 }
 
 .adInfo {
@@ -327,6 +353,62 @@ a:visited, a:focus, a:hover, a:active {
 
 .salesmanTitle {
     margin-right: 5px;
+}
+
+.titleCreateAd, .descriptionCreateAd, .priceCreateAd, .titleUpdateAd, .descriptionUpdateAd, .priceUpdateAd {
+    width: -webkit-fill-available;
+    margin-bottom: 30px;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.titleCreateAd, .titleUpdateAd {
+    margin-top: 80px;
+}
+
+.titleCreateAdText, .descriptionCreateAdText, .priceCreateAdText, .emptyMyAdsListText, .titleUpdateAdText, .descriptionUpdateAdText, .priceUpdateAdText {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+
+    color: #000000;
+}
+
+.titleCreateAdInput, .descriptionCreateAdInput, .priceCreateAdInput, .titleUpdateAdInput, .descriptionUpdateAdInput, .priceUpdateAdInput {
+    margin-bottom: 0;
+    width: 100%;
+    height: 50px;
+    border: 1px solid #000000;
+
+    padding: 2px;
+}
+
+.descriptionCreateAdInput, .descriptionUpdateAdInput {
+    height: 150px;
+}
+
+.uploadBox {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.imgUploadBox {
+    display: flex;
+}
+
+.imgCreateAd, .imgUpdateAd {
+    margin-right: 20px;
+    margin-bottom: 40px;
+}
+
+.hideImgCreateAd, .hideImgUpdateAd {
+    display: none;
 }
 
 @media (max-width: 390px) { 
@@ -406,6 +488,11 @@ a:visited, a:focus, a:hover, a:active {
     .myAdButton:not(:last-child) {
         margin-bottom: 15px;
         margin-right: 0;
+    }
+
+    .buttonChange {
+        margin-right: 0;
+        margin-bottom: 20px;
     }
 }
 

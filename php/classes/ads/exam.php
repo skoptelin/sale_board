@@ -21,7 +21,8 @@ class exam {
             $ads[] = $row;
         }
         if(empty($ads)) {
-            exit("Объявлений у юзера с ID = " . $user_id . " не существует");
+            echo json_encode("false");
+            exit;
         }
     }
 }
