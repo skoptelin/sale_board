@@ -9,16 +9,17 @@
 
     async function updateAd(id) { // Обновление объявления
 
-/*         let ad = new FormData();
-        ad.set("id", JSON.stringify(id));
-        console.log(id);
-        ad.set("title", JSON.stringify(document.getElementById("titleUpdateAd").value));
-        ad.set("discription", JSON.stringify(document.getElementById("descriptionUpdateAd").value));
-        ad.set("price", JSON.stringify(document.getElementById("priceUpdateAd").value));
-        ad.set("picture", JSON.stringify(document.getElementById("inputUpload").files[0]));
+        //Через formdata
+/*      let ad = new FormData();
+        ad.set("id", id);
+        ad.set("title", (document.getElementById("titleUpdateAd").value));
+        ad.set("discription", (document.getElementById("descriptionUpdateAd").value));
+        ad.set("price", (document.getElementById("priceUpdateAd").value));
+        ad.set("picture", (document.getElementById("inputUpload").files[0]));
 
         console.log(ad); */
 
+        //Через json - работает, кроме картинки
         let ad = {
             id: id,
             title: document.getElementById("titleUpdateAd").value,
@@ -36,6 +37,7 @@
         });
         let response = await update.json();
 
+        //Через json - картинка
         let adImg = {
             picture: document.getElementById("inputUpload").files[0]
         }
@@ -44,9 +46,34 @@
 
         let updateImg = await fetch("php/ads.php", {
             method: "PUT",
-            body: adImg
+            headers: {
+                'Content-Type': 'application/json;image;'
+              },
+            body: JSON.stringify(adImg)
         });
         let responseImg = await updateImg.json();
+
+        //Через formdata - картинка
+        /* let adImg = new FormData();
+        adImg.set("picture", (document.getElementById("inputUpload").files[0]));
+
+        console.log(adImg);
+
+        let updateImg = await fetch("php/ads.php", {
+            method: "PUT",
+            body: adImg
+        });
+        let responseImg = await updateImg.json(); */
+
+        //Через blob - картинка
+        /* let adImg = document.getElementById("inputUpload").files[0]
+        let blob = new Blob([adImg], {type: "image/png"});
+
+        let response = await fetch("php/ads.php", {
+            method: 'PUT',
+            body: blob
+        });
+        let responseImg = await response.json(); */
 
         if (response == "true" && responseImg == "true") {
             alert("Объявление " + document.getElementById("titleUpdateAd").value + " обновлено");

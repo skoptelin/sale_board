@@ -4,6 +4,7 @@ require_once("classes/DataBase.php");
 
 class putAd extends exam{
     function updateAd() {
+        
         $_PUT = json_decode(file_get_contents("php://input"), true);
         
         /* parse_str(file_get_contents("php://input"), $_PUT); */
