@@ -25,7 +25,7 @@
                 let buttonUpdate = document.querySelectorAll(".buttonChange");
                 
                 for(let i = 0; i < buttonDelete.length; i++){
-                    buttonDelete[i].addEventListener("click", deleteAd);
+                    buttonDelete[i].addEventListener("click", showPopupDelete);
                     buttonUpdate[i].addEventListener("click", goToUpdatePage);
                 }
             } else {
@@ -39,8 +39,8 @@
         
     }
 
-    async function deleteAd() {
-        let str = `${this.id}`;
+    async function deleteAd(str) {
+        /* let str = `${this.id}`; */
         let id = document.getElementById("id" + str.slice(-1));
         
         let response = await fetch("php/ads.php?id=" + id.textContent, {
@@ -88,6 +88,27 @@
         let buttons = addElement("div", "buttons", i, detail);
         let buttonChange = createButton("buttonChange", "buttonChange", i, "Изменить", buttons);
         let buttonDelete = createButton("buttonDelete", "buttonDelete", i, "Удалить", buttons);
+    }
+
+    function showPopupDelete() {
+        let content       = document.querySelector(".myAdsList");
+        let popupBox      = addElement("div", "popupBoxShow", "", content);
+        let str           = `${this.id}`;
+        let text          = "Вы действительно хотите удалить объявление " + document.getElementById("title" + str.slice(-1)).textContent + " ?";
+        let popupText     = createText("popupText", "", text);
+        popupBox.append(popupText);
+        let buttonPopupBox = addElement("div", "buttonPopupBox", "", popupBox);
+        let buttonYes      = createButton("popupButtonYes", "popupButton", "", "Да", buttonPopupBox);
+        let buttonNo       = createButton("popupButtonNo", "popupButton", "", "Нет", buttonPopupBox);
+
+        buttonNo.addEventListener("click", hidePopupDelete);
+        buttonYes.addEventListener("click", function() {
+            deleteAd(str);
+        });
+    }
+
+    function hidePopupDelete() {
+        document.querySelector(".popupBoxShow").parentNode.removeChild(document.querySelector(".popupBoxShow"));
     }
 
     function emptyAdsList() {

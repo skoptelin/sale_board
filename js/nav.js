@@ -30,7 +30,7 @@
         let navList       = addElement("nav", "navList", "", mobileNav);
         document.querySelector(".navList").classList.add("showNavList");
 
-        let navItemAllAds = createLink("navItem", "navItemAllAds", "Лента", navList);
+        let navItemAllAds = createLink("navItemSelected", "navItemAllAds", "Лента", navList);
         let navItemMyAds  = createLink("navItem", "navItemMyAds", "Мои объявления", navList);
         let navItemExit   = createLink("navItem", "navItemExit", "Выход", navList);
 
@@ -38,8 +38,26 @@
         navItemAllAds.addEventListener("click", showHideNav);
         navItemMyAds.addEventListener("click", goToMyAdsList);
         navItemMyAds.addEventListener("click", showHideNav);
-        navItemExit.addEventListener("click", logout);
+        navItemExit.addEventListener("click", showPopupLogout);
         burgerButton.addEventListener("click", showHideNav);
+    }
+
+    function showPopupLogout() {
+        let content       = document.querySelector(".container");
+        let popupBox      = addElement("div", "popupBoxShow", "", content);
+        let text          = "Вы действительно хотите выйти из профиля?";
+        let popupText     = createText("popupText", "", text);
+        popupBox.append(popupText);
+        let buttonPopupBox = addElement("div", "buttonPopupBox", "", popupBox);
+        let buttonYes      = createButton("popupButtonYes", "popupButton", "", "Да", buttonPopupBox);
+        let buttonNo       = createButton("popupButtonNo", "popupButton", "", "Нет", buttonPopupBox);
+
+        buttonNo.addEventListener("click", hidePopupDelete);
+        buttonYes.addEventListener("click", logout);
+    }
+
+    function hidePopupDelete() {
+        document.querySelector(".popupBoxShow").parentNode.removeChild(document.querySelector(".popupBoxShow"));
     }
 
     async function logout() {
@@ -72,6 +90,25 @@
         whereToAdd.append(link);
 
         return link;
+    }
+
+    function createText(className, i, textValue) {
+        let text = document.createElement("div");
+        text.classList.add(className);
+        text.id = className + i;
+        text.append(document.createTextNode(textValue));
+
+        return text;
+    }
+
+    function createButton(id, className, i, text, whereToAdd) {
+        let button = document.createElement("button");
+        button.id = id + i;
+        button.classList.add(className);
+        button.append(document.createTextNode(text));
+        whereToAdd.append(button);
+
+        return button;
     }
 
     function goToAdsList() {
