@@ -10,17 +10,24 @@
     async function updateAd(id) { // Обновление объявления
 
         //Через formdata
-/*      let ad = new FormData();
+        let ad = new FormData();
         ad.set("id", id);
         ad.set("title", (document.getElementById("titleUpdateAd").value));
         ad.set("discription", (document.getElementById("descriptionUpdateAd").value));
         ad.set("price", (document.getElementById("priceUpdateAd").value));
         ad.set("picture", (document.getElementById("inputUpload").files[0]));
+        ad.set("method", "PUT");
 
-        console.log(ad); */
+        console.log(ad);
+
+        let update = await fetch("php/ads.php", {
+            method: "POST",
+            body: ad
+        });
+        let response = await update.json();
 
         //Через json - работает, кроме картинки
-        let ad = {
+       /*  let ad = {
             id: id,
             title: document.getElementById("titleUpdateAd").value,
             discription: document.getElementById("descriptionUpdateAd").value,
@@ -51,7 +58,7 @@
               },
             body: JSON.stringify(adImg)
         });
-        let responseImg = await updateImg.json();
+        let responseImg = await updateImg.json(); */
 
         //Через formdata - картинка
         /* let adImg = new FormData();
@@ -75,13 +82,54 @@
         });
         let responseImg = await response.json(); */
 
-        if (response == "true" && responseImg == "true") {
+        /* if (response == "true" && responseImg == "true") {
             alert("Объявление " + document.getElementById("titleUpdateAd").value + " обновлено");
             goToMyAdsList();
         } else if (response == "false" || responseImg == "false") {
             alert("Заполните обязательные поля: название, описание, цена");
+        } */
+
+        if (response == "true") {
+            showPopupUpdate("Объявление " + document.getElementById("titleUpdateAd").value + " обновлено");
+        } else if (response == "false") {
+            showPopupNotice("Заполните обязательные поля: название, описание, цена");
         }
         
+    }
+
+    function showPopupUpdate(textValue) {
+        let content       = document.querySelector(".container");
+        let popupBox      = addElement("div", "popupBoxShow");
+        content.append(popupBox);
+        let popupText     = createText("popupText", textValue);
+        popupBox.append(popupText);
+        let buttonPopupBox = addElement("div", "buttonPopupBox");
+        popupBox.append(buttonPopupBox);
+        let buttonOk      = createButton("popupButtonOk", "OK");
+        buttonPopupBox.append(buttonOk);
+
+        buttonOk.addEventListener("click", function(){
+            hidePopupUpdate();
+            goToMyAdsList();
+        });
+    }
+
+    function showPopupNotice(textValue) {
+        let content       = document.querySelector(".container");
+        let popupBox      = addElement("div", "popupBoxShow");
+        content.append(popupBox);
+        let popupText     = createText("popupText", textValue);
+        popupBox.append(popupText);
+        let buttonPopupBox = addElement("div", "buttonPopupBox");
+        popupBox.append(buttonPopupBox);
+        let buttonOk      = createButton("popupButtonOk", "OK");
+        buttonPopupBox.append(buttonOk);
+
+        buttonOk.addEventListener("click", hidePopupUpdate);
+    }
+
+    function hidePopupUpdate() {
+        document.querySelector(".popupBoxShow").parentNode.removeChild(document.querySelector(".popupBoxShow"));
     }
 
     function createAdPage(id, title, description, price, picture) {

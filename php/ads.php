@@ -17,13 +17,14 @@ $putAd    = new putAd();
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") { // Получить объявление с id = ... или все объявления или объявления по id юзера. 
     $getAds->getAds();
-    
 } else if ($_SERVER["REQUEST_METHOD"] == "POST") { //Создать объявление если заполненны все поля, кроме picture
-    $postAd->postAd();
-
-} else if ($_SERVER["REQUEST_METHOD"] == "PUT") { //Обновить данные объявления с id = ...
-    $putAd->updateAd();
-
+    if ($_REQUEST["method"] == "POST") {
+        $postAd->postAd();
+    }else{
+        $putAd->updateAd();
+    }
 } else if ($_SERVER["REQUEST_METHOD"] == "DELETE") { // Удалить объявление с id = ...
     $deleteAd->delete();
-} 
+/* } else if ($_REQUEST["method"] == "PUT") { //Обновить данные объявления с id = ...
+    $putAd->updateAd(); */
+}

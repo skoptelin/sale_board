@@ -26,7 +26,7 @@
             }
         }
         catch (e) {
-            alert("Упс, что-то пошло не так! Ошибка: " + e.name.value);
+            showPopup("Упс, что-то пошло не так! Ошибка: " + e.name.value);
         }
         
     }
@@ -69,6 +69,17 @@
         salesmanInfo.append(salesmanTitle);
         let salesmanValue = createText("salesmanValue", i, nameValue);
         salesmanInfo.append(salesmanValue);
+    }
+
+    function showPopup(textValue) {
+        let content       = document.querySelector(".myAdsList");
+        let popupBox      = addElement("div", "popupBoxShow", "", content);
+        let popupText     = createText("popupText", "", textValue);
+        popupBox.append(popupText);
+        let buttonPopupBox = addElement("div", "buttonPopupBox", "", popupBox);
+        let buttonOk      = createButton("popupButtonYes", "popupButton", "", "OK", buttonPopupBox);
+
+        buttonOk.addEventListener("click", goToAdsList);
     }
 
     function showTelNum() {

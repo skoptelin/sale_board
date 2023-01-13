@@ -37,10 +37,36 @@
         if (response == "true") {
             goToAdsList();
         } else if(response == "false") {
-            alert("Неверный логин или пароль");
+            showPopup("Неверный логин или пароль");
         } else if(response == "data empty") {
-            alert("Введите логин и пароль");
+            showPopup("Введите логин и пароль");
         }
+    }
+
+    function showPopup(textValue) {
+        let content       = document.querySelector(".content");
+        let popupBox      = addElement("div", "popupBoxShow");
+        content.append(popupBox);
+        let popupText     = createText("popupText", textValue);
+        popupBox.append(popupText);
+        let buttonPopupBox = addElement("div", "buttonPopupBox");
+        popupBox.append(buttonPopupBox);
+        let buttonOk      = createButton("popupButtonOk", "OK");
+        buttonPopupBox.append(buttonOk);
+
+        buttonOk.addEventListener("click", hidePopup);
+    }
+
+    function hidePopup() {
+        document.querySelector(".popupBoxShow").parentNode.removeChild(document.querySelector(".popupBoxShow"));
+    }
+
+    function addElement(elementName, className) {
+        let element = document.createElement(elementName);
+        element.classList.add(className);
+        element.id = className;
+
+        return element;
     }
 
     function createContent(){

@@ -20,10 +20,10 @@
         let response = await create.json();
 
         if (response == "true") {
-            alert("Пользователь " + document.getElementById("name").value + " создан");
-            goToLogin();
+            showPopupUserCreate("Пользователь " + document.getElementById("name").value + " создан");
         } else {
-            let message = alert(JSON.stringify(response));
+            let message = JSON.stringify(response);
+            showPopup(message);
         }
         
     }
@@ -32,7 +32,7 @@
         let strPass = document.getElementById("password");
         let minPassLenght = 8;
         if (strPass.value.length < minPassLenght) {
-            alert("Пароль слишком короткий");           
+            showPopup("Пароль слишком короткий");      
         } else {
             applyPassword();
         }
@@ -45,7 +45,7 @@
         if(password.value == applyPassword.value) {
             createUser();
         } else {
-            alert("Подтверждение не совпадает с паролем");
+            showPopup("Подтверждение не совпадает с паролем");
         }
     }
 
@@ -76,6 +76,49 @@
 
         //Действие при получении фокуса на инпут телефона
         telNum.addEventListener("focus", createTelPrefix);
+    }
+
+    function showPopupUserCreate(textValue) {
+        let content       = document.querySelector(".content");
+        let popupBox      = addElement("div", "popupBoxShow");
+        content.append(popupBox);
+        let popupText     = createText("popupText", textValue);
+        popupBox.append(popupText);
+        let buttonPopupBox = addElement("div", "buttonPopupBox");
+        popupBox.append(buttonPopupBox);
+        let buttonOk      = createButton("popupButtonOk", "OK");
+        buttonPopupBox.append(buttonOk);
+
+        buttonOk.addEventListener("click", function() {
+            hidePopup();
+            goToLogin();
+        });
+    }
+
+    function showPopup(textValue) {
+        let content       = document.querySelector(".content");
+        let popupBox      = addElement("div", "popupBoxShow");
+        content.append(popupBox);
+        let popupText     = createText("popupText", textValue);
+        popupBox.append(popupText);
+        let buttonPopupBox = addElement("div", "buttonPopupBox");
+        popupBox.append(buttonPopupBox);
+        let buttonOk      = createButton("popupButtonOk", "OK");
+        buttonPopupBox.append(buttonOk);
+
+        buttonOk.addEventListener("click", hidePopup);
+    }
+
+    function hidePopup() {
+        document.querySelector(".popupBoxShow").parentNode.removeChild(document.querySelector(".popupBoxShow"));
+    }
+
+    function addElement(elementName, className) {
+        let element = document.createElement(elementName);
+        element.classList.add(className);
+        element.id = className;
+
+        return element;
     }
 
     function createContent(){

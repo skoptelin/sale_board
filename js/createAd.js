@@ -14,6 +14,7 @@
         ad.set("discription", document.getElementById("descriptionCreateAd").value);
         ad.set("price", document.getElementById("priceCreateAd").value);
         ad.set("picture", document.getElementById("inputUpload").files[0]);
+        ad.set("method", "POST");
 
         let create = await fetch("php/ads.php", {
             method: "POST",
@@ -22,12 +23,48 @@
         let response = await create.json();
 
         if (response == "true") {
-            alert("Объявление " + document.getElementById("titleCreateAd").value + " создано");
-            goToMyAdsList();
+            showPopupCreate("Объявление " + document.getElementById("titleCreateAd").value + " создано");
         } else if (response == "false") {
-            alert("Заполните обязательные поля: название, описание, цена");
+            showPopupNotice("Заполните обязательные поля: название, описание, цена");
         }
         
+    }
+
+    function showPopupCreate(textValue) {
+        let content       = document.querySelector(".container");
+        let popupBox      = addElement("div", "popupBoxShow");
+        content.append(popupBox);
+        let popupText     = createText("popupText", textValue);
+        popupBox.append(popupText);
+        let buttonPopupBox = addElement("div", "buttonPopupBox");
+        popupBox.append(buttonPopupBox);
+        let buttonOk      = createButton("popupButtonOk", "OK");
+        buttonPopupBox.append(buttonOk);
+
+        buttonOk.addEventListener("click", function(){
+            hidePopupUpdate();
+            goToMyAdsList();
+        });
+    }
+
+    function showPopupNotice(textValue) {
+        let content       = document.querySelector(".container");
+        let popupBox      = addElement("div", "popupBoxShow");
+        content.append(popupBox);
+        let popupText     = createText("popupText", textValue);
+        popupBox.append(popupText);
+        let buttonPopupBox = addElement("div", "buttonPopupBox");
+        popupBox.append(buttonPopupBox);
+        let buttonOk      = createButton("popupButtonOk", "OK");
+        buttonPopupBox.append(buttonOk);
+
+        buttonOk.addEventListener("click", function(){
+            hidePopupUpdate();
+        });
+    }
+
+    function hidePopupUpdate() {
+        document.querySelector(".popupBoxShow").parentNode.removeChild(document.querySelector(".popupBoxShow"));
     }
 
     function createAdPage() {

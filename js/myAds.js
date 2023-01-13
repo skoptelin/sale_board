@@ -34,7 +34,7 @@
             
         }
         catch (e) {
-            alert("Упс, что-то пошло не так! Ошибка: " + e.name.value);
+            showPopup("Упс, что-то пошло не так! Ошибка: " + e.name.value);
         }
         
     }
@@ -49,10 +49,10 @@
         let answer = await response.json();
 
         if (answer == "true") {
-            alert("Объявление " + document.getElementById("title" + str.slice(-1)).textContent + " удалено");
-            goToMyAdsList();    
+            hidePopupDelete();
+            showPopupDeleted("Объявление " + document.getElementById("title" + str.slice(-1)).textContent + " удалено");
         } else {
-            alert("Error");
+            showPopupDeleted("Упс... что-то пошло не так!");
         }
 
     }
@@ -60,14 +60,10 @@
     function createAd(i, id, picture, titleValue, discriptionValue, price) {
         
         let content       = document.querySelector(".myAdsList");
-
         let adBox         = addElement("div", "adBox", i, content);
-
         let adImg         = addElement("img", "myAdImg", i, adBox);
         adImg.src         = picture;
-
         let detail        = addElement("div", "detail", i, adBox);
-
         let idText        = createText("id", i, id);
         detail.append(idText);
 
@@ -109,6 +105,28 @@
 
     function hidePopupDelete() {
         document.querySelector(".popupBoxShow").parentNode.removeChild(document.querySelector(".popupBoxShow"));
+    }
+
+    function showPopupDeleted(textValue) {
+        let content       = document.querySelector(".myAdsList");
+        let popupBox      = addElement("div", "popupBoxShow", "", content);
+        let popupText     = createText("popupText", "", textValue);
+        popupBox.append(popupText);
+        let buttonPopupBox = addElement("div", "buttonPopupBox", "", popupBox);
+        let buttonOk      = createButton("popupButtonYes", "popupButton", "", "OK", buttonPopupBox);
+
+        buttonOk.addEventListener("click", goToMyAdsList);
+    }
+
+    function showPopup(textValue) {
+        let content       = document.querySelector(".myAdsList");
+        let popupBox      = addElement("div", "popupBoxShow", "", content);
+        let popupText     = createText("popupText", "", textValue);
+        popupBox.append(popupText);
+        let buttonPopupBox = addElement("div", "buttonPopupBox", "", popupBox);
+        let buttonOk      = createButton("popupButtonYes", "popupButton", "", "OK", buttonPopupBox);
+
+        buttonOk.addEventListener("click", goToAdsList);
     }
 
     function emptyAdsList() {
@@ -189,6 +207,20 @@
         
         document.querySelector(".container").parentNode.removeChild(document.querySelector(".container"));
         app.updateAd.draw(id, title, description, price, picture);
+    }
+
+    function goToAdsList() {
+        document.querySelector(".container").parentNode.removeChild(document.querySelector(".container"));
+        app.adsList.draw();
+        let adsList = document.getElementById("navItemAllAds");
+        let myAdsList = document.getElementById("navItemMyAds");
+            adsList.classList.remove("navItem");
+            adsList.classList.add("navItemSelected");
+
+        if(myAdsList.classList == "navItemSelected") {
+            myAdsList.classList.remove("navItemSelected");
+            myAdsList.classList.add("navItem");
+        }
     }
 
 })(SaleBoard);
