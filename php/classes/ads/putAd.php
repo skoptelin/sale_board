@@ -39,8 +39,8 @@ class putAd extends exam{
     
                 if(!empty($_POST["title"] && $_POST["discription"] && $_POST["price"]) && isset($_FILES["picture"])) {
                     $fileName = "files/" . $_FILES["picture"]["name"];
-                    $this->update("UPDATE ads SET `title` = '{$_POST["title"]}', `discription` = '{$_POST["discription"]}', `price` = {$_POST["price"]}, `picture` = '$fileName', `update_at` = CURRENT_TIME() WHERE id = {$_POST["id"]}");
                     $this->createPicture();
+                    $this->update("UPDATE ads SET `title` = '{$_POST["title"]}', `discription` = '{$_POST["discription"]}', `price` = {$_POST["price"]}, `picture` = '$fileName', `update_at` = CURRENT_TIME() WHERE id = {$_POST["id"]}");
     
                 } else if(!empty($_POST["title"] && $_POST["discription"] && $_POST["price"])) {
                     $this->update("UPDATE ads SET `title` = '{$_POST["title"]}', `discription` = '{$_POST["discription"]}', `price` = {$_POST["price"]}, `update_at` = CURRENT_TIME() WHERE id = {$_POST["id"]}");
