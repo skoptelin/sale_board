@@ -1,8 +1,8 @@
 <?php
-require_once("classes/DataBase.php");
+require_once("Classes/DataBase.php");
 
-class deleteUser extends exam{
-    function delete() {
+class DeleteUser extends Exam{
+    public function delete() {
         if(isset($_GET["id"])) {
             $this->isUser($_GET["id"]);
             DataBase::query("DELETE FROM users WHERE id = {$_GET["id"]}");

@@ -13,25 +13,28 @@
         user.set("phone_num", document.getElementById("phone_num").value);
         user.set("password", document.getElementById("password").value);
 
-        let create = await fetch("php/users.php", {
-            method: "POST",
-            body: user
-        });
-        let response = await create.json();
-
-        if (response == "true") {
-            showPopupUserCreate("Пользователь " + document.getElementById("name").value + " создан");
-        } else {
-            let message = JSON.stringify(response);
-            showPopup(message);
+        try {
+            let create = await fetch("php/users.php", {
+                method: "POST",
+                body: user
+            });
+            let response = await create.json();
+    
+            if (response == "true") {
+                showPopupUserCreate("Пользователь " + document.getElementById("name").value + " создан");
+            } else {
+                let message = JSON.stringify(response);
+                showPopup(message);
+            }
+        } catch (error) {
+            showPopup("Упс, что-то пошло не так! Ошибка: " + error.name.value);
         }
-        
     }
 
-    function minInputPassValue() {
-        let strPass = document.getElementById("password");
-        let minPassLenght = 8;
-        if (strPass.value.length < minPassLenght) {
+    function minInputPasswordValue() {
+        let password          = document.getElementById("password");
+        let minPasswordLenght = 8;
+        if (password.value.length < minPasswordLenght) {
             showPopup("Пароль слишком короткий");      
         } else {
             applyPassword();
@@ -40,7 +43,7 @@
     }
 
     function applyPassword() {
-        let password = document.getElementById("password");
+        let password      = document.getElementById("password");
         let applyPassword = document.getElementById("applyPassword");
         if(password.value == applyPassword.value) {
             createUser();
@@ -50,21 +53,21 @@
     }
 
     function createRegPage() {
-        let content     = createContent();
-        let reg         = createText("regText", "Регистрация");
-        let input1      = createInput("inputText", "email", "E-mail");
-        let input2      = createInput("inputText", "name", "Имя");
-        let input3      = createInput("inputText", "phone_num", "Телефон");
-        let input4      = createInput("inputText", "password", "Пароль");
-        let input5      = createInput("inputText", "applyPassword", "Подтверждение пароля");
-        let regButton   = createButton("reg", "Зарегистрироваться");
-        let loginButton = createButton("login", "Войти");
+        let content            = createContent();
+        let pageTitleText      = createText("regText", "Регистрация");
+        let inputEmail         = createInput("inputText", "email", "E-mail");
+        let inputName          = createInput("inputText", "name", "Имя");
+        let inputPhoneNumber   = createInput("inputText", "phone_num", "Телефон");
+        let inputPassword      = createInput("inputText", "password", "Пароль");
+        let inputApplyPassword = createInput("inputText", "applyPassword", "Подтверждение пароля");
+        let registerButton     = createButton("reg", "Зарегистрироваться");
+        let loginButton        = createButton("login", "Войти");
 
-        content.append(reg, input1, input2, input3, input4, input5, regButton, loginButton);
+        content.append(pageTitleText, inputEmail, inputName, inputPhoneNumber, inputPassword, inputApplyPassword, registerButton, loginButton);
 
         let password       = document.getElementById("password");
         let applyPassword  = document.getElementById("applyPassword");
-        let telNum         = document.getElementById("phone_num");
+        let phoneNumber    = document.getElementById("phone_num");
         password.type      = "password";
         applyPassword.type = "password";
 
@@ -72,24 +75,24 @@
         loginButton.addEventListener("click", goToLogin);
 
         //Действие при нажатии на кнопку Зарегистрироваться
-        regButton.addEventListener("click", minInputPassValue);
+        registerButton.addEventListener("click", minInputPasswordValue);
 
         //Действие при получении фокуса на инпут телефона
-        telNum.addEventListener("focus", createTelPrefix);
+        phoneNumber.addEventListener("focus", createTelPrefix);
     }
 
     function showPopupUserCreate(textValue) {
-        let content       = document.querySelector(".content");
-        let popupBox      = addElement("div", "popupBoxShow");
+        let content        = document.querySelector(".content");
+        let popupBox       = addElement("div", "popupBoxShow");
         content.append(popupBox);
-        let popupText     = createText("popupText", textValue);
+        let popupText      = createText("popupText", textValue);
         popupBox.append(popupText);
         let buttonPopupBox = addElement("div", "buttonPopupBox");
         popupBox.append(buttonPopupBox);
-        let buttonOk      = createButton("popupButtonOk", "OK");
-        buttonPopupBox.append(buttonOk);
+        let buttonAccept   = createButton("popupButtonOk", "OK");
+        buttonPopupBox.append(buttonAccept);
 
-        buttonOk.addEventListener("click", function() {
+        buttonAccept.addEventListener("click", function() {
             hidePopup();
             goToLogin();
         });
@@ -103,10 +106,10 @@
         popupBox.append(popupText);
         let buttonPopupBox = addElement("div", "buttonPopupBox");
         popupBox.append(buttonPopupBox);
-        let buttonOk      = createButton("popupButtonOk", "OK");
-        buttonPopupBox.append(buttonOk);
+        let buttonAccept   = createButton("popupButtonOk", "OK");
+        buttonPopupBox.append(buttonAccept);
 
-        buttonOk.addEventListener("click", hidePopup);
+        buttonAccept.addEventListener("click", hidePopup);
     }
 
     function hidePopup() {

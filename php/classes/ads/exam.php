@@ -1,9 +1,9 @@
 <?php
 
-require_once("classes/DataBase.php");
+require_once("Classes/DataBase.php");
 
-class exam {
-    function isAds($id){ //Проверка существует ли такое объявление
+class Exam {
+    public function isAds($id){ //Проверка существует ли такое объявление
         $query = DataBase::query("SELECT * FROM ads WHERE id = $id");
         $ads = [];
         while ($row = DataBase::fetch($query)){ 
@@ -14,7 +14,7 @@ class exam {
         }
     }
     
-    function isAdsByUser($user_id){ //Проверка существуют ли объявления у юзера
+    public function isAdsByUser($user_id){ //Проверка существуют ли объявления у юзера
         $query = DataBase::query("SELECT * FROM ads WHERE `user_id` = $user_id");
         $ads = [];
         while ($row = DataBase::fetch($query)){ 

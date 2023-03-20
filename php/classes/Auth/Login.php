@@ -2,10 +2,10 @@
 
 session_start();
 
-require_once("classes/connect.php");
-require_once("classes/DataBase.php");
+require_once("../Connect.php");
+require_once("../DataBase.php");
 
-$connect = new connect();
+$connect = new Connect();
 
 if (!empty($_POST["email"] && $_POST["password"])) {
     $query = DataBase::query("SELECT * FROM users WHERE `email` = '{$_POST["email"]}' AND `password` = '{$_POST["password"]}'");

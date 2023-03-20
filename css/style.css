@@ -388,6 +388,14 @@ a:visited, a:focus, a:hover, a:active {
     border: 1px solid #000000;
 
     padding: 2px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+
+    color: #000000;
 }
 
 .descriptionCreateAdInput, .descriptionUpdateAdInput {

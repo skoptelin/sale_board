@@ -2,18 +2,18 @@
 
 session_start();
 
-require_once("classes/connect.php");
-require_once("classes/DataBase.php");
-require_once("classes/ads/getAds.php");
-require_once("classes/ads/deleteAd.php");
-require_once("classes/ads/postAd.php");
-require_once("classes/ads/putAd.php");
+require_once("Classes/Connect.php");
+require_once("Classes/DataBase.php");
+require_once("Classes/Ads/GetAds.php");
+require_once("Classes/Ads/DeleteAd.php");
+require_once("Classes/Ads/PostAd.php");
+require_once("Classes/Ads/PutAd.php");
 
-$connect  = new connect();
-$getAds   = new readAds();
-$deleteAd = new deleteAd();
-$postAd   = new createAd();
-$putAd    = new putAd();
+$connect  = new Connect();
+$getAds   = new ReadAds();
+$deleteAd = new DeleteAd();
+$postAd   = new CreateAd();
+$putAd    = new PutAd();
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") { // Получить объявление с id = ... или все объявления или объявления по id юзера. 
     $getAds->getAds();
@@ -25,6 +25,4 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") { // Получить объявлен�
     }
 } else if ($_SERVER["REQUEST_METHOD"] == "DELETE") { // Удалить объявление с id = ...
     $deleteAd->delete();
-/* } else if ($_REQUEST["method"] == "PUT") { //Обновить данные объявления с id = ...
-    $putAd->updateAd(); */
 }

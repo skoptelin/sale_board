@@ -31,17 +31,14 @@
             } else {
                 emptyAdsList();
             }
-            
         }
         catch (e) {
             showPopup("Упс, что-то пошло не так! Ошибка: " + e.name.value);
         }
-        
     }
 
-    async function deleteAd(str) {
-        /* let str = `${this.id}`; */
-        let id = document.getElementById("id" + str.slice(-1));
+    async function deleteAd(targetIdName) {
+        let id = document.getElementById("id" + targetIdName.slice(-1));
         
         let response = await fetch("php/ads.php?id=" + id.textContent, {
             method: "DELETE"
@@ -50,56 +47,54 @@
 
         if (answer == "true") {
             hidePopupDelete();
-            showPopupDeleted("Объявление " + document.getElementById("title" + str.slice(-1)).textContent + " удалено");
+            showPopupDeleted("Объявление " + document.getElementById("title" + targetIdName.slice(-1)).textContent + " удалено");
         } else {
             showPopupDeleted("Упс... что-то пошло не так!");
         }
-
     }
 
     function createAd(i, id, picture, titleValue, discriptionValue, price) {
-        
         let content       = document.querySelector(".myAdsList");
         let adBox         = addElement("div", "adBox", i, content);
-        let adImg         = addElement("img", "myAdImg", i, adBox);
-        adImg.src         = picture;
-        let detail        = addElement("div", "detail", i, adBox);
+        let adPicture     = addElement("img", "myAdImg", i, adBox);
+        adPicture.src     = picture;
+        let detailBox     = addElement("div", "detail", i, adBox);
         let idText        = createText("id", i, id);
-        detail.append(idText);
+        detailBox.append(idText);
 
-        let adInfo        = addElement("div", "adInfo", i, detail);
-        let titleAndDiscr = addElement("div", "titleAndDiscription", i, adInfo);
-        let title         = createText("title", i, titleValue);
-        titleAndDiscr.append(title);
-        let discription   = createText("discription", i, discriptionValue);
-        titleAndDiscr.append(discription);
+        let adInformationBox       = addElement("div", "adInfo", i, detailBox);
+        let titleAndDiscriptionBox = addElement("div", "titleAndDiscription", i, adInformationBox);
+        let title                  = createText("title", i, titleValue);
+        titleAndDiscriptionBox.append(title);
+        let discription            = createText("discription", i, discriptionValue);
+        titleAndDiscriptionBox.append(discription);
 
-        let adPrice       = addElement("div", "adPrice", i, adInfo);
-        let priceValue    = createText("priceValue", i, formattingNum(price));
-        adPrice.append(priceValue);
+        let adPriceBox    = addElement("div", "adPrice", i, adInformationBox);
+        let priceValue    = createText("priceValue", i, formattingPriceValue(price));
+        adPriceBox.append(priceValue);
         let currencyValue = "₽";
         let currency      = createText("currency", i, currencyValue);
-        adPrice.append(currency);
+        adPriceBox.append(currency);
 
-        let buttons = addElement("div", "buttons", i, detail);
-        let buttonChange = createButton("buttonChange", "buttonChange", i, "Изменить", buttons);
-        let buttonDelete = createButton("buttonDelete", "buttonDelete", i, "Удалить", buttons);
+        let buttonsBox    = addElement("div", "buttons", i, detailBox);
+        createButton("buttonChange", "buttonChange", i, "Изменить", buttonsBox);
+        createButton("buttonDelete", "buttonDelete", i, "Удалить", buttonsBox);
     }
 
     function showPopupDelete() {
         let content       = document.querySelector(".myAdsList");
         let popupBox      = addElement("div", "popupBoxShow", "", content);
-        let str           = `${this.id}`;
-        let text          = "Вы действительно хотите удалить объявление " + document.getElementById("title" + str.slice(-1)).textContent + " ?";
+        let targetIdName  = `${this.id}`;
+        let text          = "Вы действительно хотите удалить объявление " + document.getElementById("title" + targetIdName.slice(-1)).textContent + " ?";
         let popupText     = createText("popupText", "", text);
         popupBox.append(popupText);
         let buttonPopupBox = addElement("div", "buttonPopupBox", "", popupBox);
-        let buttonYes      = createButton("popupButtonYes", "popupButton", "", "Да", buttonPopupBox);
-        let buttonNo       = createButton("popupButtonNo", "popupButton", "", "Нет", buttonPopupBox);
+        let buttonAccept   = createButton("popupButtonYes", "popupButton", "", "Да", buttonPopupBox);
+        let buttonReject   = createButton("popupButtonNo", "popupButton", "", "Нет", buttonPopupBox);
 
-        buttonNo.addEventListener("click", hidePopupDelete);
-        buttonYes.addEventListener("click", function() {
-            deleteAd(str);
+        buttonReject.addEventListener("click", hidePopupDelete);
+        buttonAccept.addEventListener("click", function() {
+            deleteAd(targetIdName);
         });
     }
 
@@ -113,9 +108,9 @@
         let popupText     = createText("popupText", "", textValue);
         popupBox.append(popupText);
         let buttonPopupBox = addElement("div", "buttonPopupBox", "", popupBox);
-        let buttonOk      = createButton("popupButtonYes", "popupButton", "", "OK", buttonPopupBox);
+        let buttonAccept   = createButton("popupButtonYes", "popupButton", "", "OK", buttonPopupBox);
 
-        buttonOk.addEventListener("click", goToMyAdsList);
+        buttonAccept.addEventListener("click", goToMyAdsList);
     }
 
     function showPopup(textValue) {
@@ -124,9 +119,9 @@
         let popupText     = createText("popupText", "", textValue);
         popupBox.append(popupText);
         let buttonPopupBox = addElement("div", "buttonPopupBox", "", popupBox);
-        let buttonOk      = createButton("popupButtonYes", "popupButton", "", "OK", buttonPopupBox);
+        let buttonAccept   = createButton("popupButtonYes", "popupButton", "", "OK", buttonPopupBox);
 
-        buttonOk.addEventListener("click", goToAdsList);
+        buttonAccept.addEventListener("click", goToAdsList);
     }
 
     function emptyAdsList() {
@@ -137,19 +132,19 @@
 
     function createAddButton() {
         let addButtonBox = addElement("div", "addButton", "", document.querySelector(".adsList"));
-        let addButton = createButton("addButton", "myAdButton", "", "Добавить", addButtonBox);
+        let addButton    = createButton("addButton", "myAdButton", "", "Добавить", addButtonBox);
 
         addButton.addEventListener("click", goToCreateAd);
     }
 
-    function formattingNum(numValue) { // Форматирование чисел: добавить пробелы между разрядами до точки или запятой
-        numValue = numValue.toString();
-        let num = numValue.match(/^(.*?)((?:[,.]\d+)?|)$/);
-        if (num) {
-            let formattingNum = num[1].replace(/\B(?=(?:\d{3})*$)/g, ' ') + num[2];
-            return formattingNum;
+    function formattingPriceValue(priceValue) { // Форматирование чисел: добавить пробелы между разрядами до точки или запятой
+        priceValue = priceValue.toString();
+        let formattingPrice  = priceValue.match(/^(.*?)((?:[,.]\d+)?|)$/);
+        if (formattingPrice) {
+            let formattingPriceValue = formattingPrice[1].replace(/\B(?=(?:\d{3})*$)/g, ' ') + formattingPrice[2];
+            return formattingPriceValue;
         } else {
-            return num;
+            return formattingPrice;
         }
     }
 
@@ -198,12 +193,12 @@
     }
 
     function goToUpdatePage() {
-        let str         = `${this.id}`;
-        let id          = document.getElementById("id" + str.slice(-1)).textContent;
-        let title       = document.getElementById("title" + str.slice(-1)).textContent;
-        let description = document.getElementById("discription" + str.slice(-1)).textContent;
-        let price       = document.getElementById("priceValue" + str.slice(-1)).textContent;
-        let picture     = document.getElementById("myAdImg" + str.slice(-1)).src;
+        let targetIdName = `${this.id}`;
+        let id           = document.getElementById("id" + targetIdName.slice(-1)).textContent;
+        let title        = document.getElementById("title" + targetIdName.slice(-1)).textContent;
+        let description  = document.getElementById("discription" + targetIdName.slice(-1)).textContent;
+        let price        = document.getElementById("priceValue" + targetIdName.slice(-1)).textContent;
+        let picture      = document.getElementById("myAdImg" + targetIdName.slice(-1)).src;
         
         document.querySelector(".container").parentNode.removeChild(document.querySelector(".container"));
         app.updateAd.draw(id, title, description, price, picture);

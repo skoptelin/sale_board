@@ -1,36 +1,34 @@
 (function(app) {
-    app.createAd = {
-        draw: function() {
+    app.updateAd = {
+        draw: function(id, title, description, price, picture) {
             createContent();
-            createAdPage();
-
+            createAdPage(id, title, description, price, picture);
         }
     }
 
-    async function createAd() { // Создание объявления
-
+    async function updateAd(id) { // Обновление объявления
         let ad = new FormData();
-        ad.set("title", document.getElementById("titleCreateAd").value);
-        ad.set("discription", document.getElementById("descriptionCreateAd").value);
-        ad.set("price", document.getElementById("priceCreateAd").value);
-        ad.set("picture", document.getElementById("inputUpload").files[0]);
-        ad.set("method", "POST");
+        ad.set("id", id);
+        ad.set("title", (document.getElementById("titleUpdateAd").value));
+        ad.set("discription", (document.getElementById("descriptionUpdateAd").value));
+        ad.set("price", (document.getElementById("priceUpdateAd").value));
+        ad.set("picture", (document.getElementById("inputUpload").files[0]));
+        ad.set("method", "PUT");
 
-        let create = await fetch("php/ads.php", {
+        let update = await fetch("php/ads.php", {
             method: "POST",
             body: ad
         });
-        let response = await create.json();
+        let response = await update.json();
 
         if (response == "true") {
-            showPopupCreate("Объявление " + document.getElementById("titleCreateAd").value + " создано");
+            showPopupUpdate("Объявление " + document.getElementById("titleUpdateAd").value + " обновлено");
         } else if (response == "false") {
             showPopupNotice("Заполните обязательные поля: название, описание, цена");
         }
-        
     }
 
-    function showPopupCreate(textValue) {
+    function showPopupUpdate(textValue) {
         let content       = document.querySelector(".container");
         let popupBox      = addElement("div", "popupBoxShow");
         content.append(popupBox);
@@ -38,11 +36,11 @@
         popupBox.append(popupText);
         let buttonPopupBox = addElement("div", "buttonPopupBox");
         popupBox.append(buttonPopupBox);
-        let buttonOk      = createButton("popupButtonOk", "OK");
-        buttonPopupBox.append(buttonOk);
+        let buttonAccept   = createButton("popupButtonOk", "OK");
+        buttonPopupBox.append(buttonAccept);
 
-        buttonOk.addEventListener("click", function(){
-            hidePopupUpdate();
+        buttonAccept.addEventListener("click", function(){
+            hidePopup();
             goToMyAdsList();
         });
     }
@@ -55,44 +53,64 @@
         popupBox.append(popupText);
         let buttonPopupBox = addElement("div", "buttonPopupBox");
         popupBox.append(buttonPopupBox);
-        let buttonOk      = createButton("popupButtonOk", "OK");
-        buttonPopupBox.append(buttonOk);
+        let buttonAccept   = createButton("popupButtonOk", "OK");
+        buttonPopupBox.append(buttonAccept);
 
-        buttonOk.addEventListener("click", function(){
-            hidePopupUpdate();
-        });
+        buttonAccept.addEventListener("click", hidePopup);
     }
 
-    function hidePopupUpdate() {
+    function hidePopup() {
         document.querySelector(".popupBoxShow").parentNode.removeChild(document.querySelector(".popupBoxShow"));
     }
 
-    function createAdPage() {
-        let content     = document.querySelector(".container");
-        let inputList = addElement("div", "inputList");
-        let inputTitle  = createInput("titleCreateAd", "titleCreateAd", "Название:");
-        let inputDescription = createTextArea("descriptionCreateAd", "descriptionCreateAd", "Описание:");
-        let inputPrice = createInput("priceCreateAd", "priceCreateAd", "Цена:");
-        let uploadBox = addElement("div", "uploadBox");
-        let imgUploadBox = addElement("div", "imgUploadBox");
-        let Img = addElement("img", "hideImgCreateAd");
+    function createAdPage(id, title, description, price, picture) {
+        let content          = document.querySelector(".container");
+        let inputList        = addElement("div", "inputList");
+        let inputTitle       = createInput("titleUpdateAd", "titleUpdateAd", "Название:");
+        let inputDescription = createTextArea("descriptionUpdateAd", "descriptionUpdateAd", "Описание:");
+        let inputPrice       = createInput("priceUpdateAd", "priceUpdateAd", "Цена:");
+        let uploadBox        = addElement("div", "uploadBox");
+        let pictureUploadBox = addElement("div", "imgUploadBox");
+        let pictureBox       = addElement("img", "hideImgUpdateAd");
         let labelInputUpload = addElement("label", "inputUploadLabel");
         labelInputUpload.setAttribute("for","inputUpload");
 
-        let labelText = document.createTextNode("Загрузить фото");
+        let labelText        = document.createTextNode("Загрузить фото");
         labelInputUpload.append(labelText);
         
-        let inputUpload = createInputButton("inputUpload", "file");
-        let buttonSave = createButton("buttonSave", "Создать объявление");
+        let inputUpload      = createInputButton("inputUpload", "file");
+        let buttonSave       = createButton("buttonSave", "Сохранить");
 
         content.append(inputList);
         inputList.append(inputTitle, inputDescription, inputPrice);
         content.append(uploadBox);
-        uploadBox.append(imgUploadBox, buttonSave);
-        imgUploadBox.append(Img, labelInputUpload, inputUpload);
+        uploadBox.append(pictureUploadBox, buttonSave);
+        pictureUploadBox.append(pictureBox, labelInputUpload, inputUpload);
+
+        let titleValue       = document.getElementById("titleUpdateAd");
+        let descriptionValue = document.getElementById("descriptionUpdateAd");
+        let priceValue       = document.getElementById("priceUpdateAd");
+        let pictureValue     = document.getElementById("hideImgUpdateAd");
+
+        titleValue.value       = title;
+        descriptionValue.value = description;
+        priceValue.value       = deleteSpace(price);
+        pictureValue.src       = picture;
+
+        showAdPicture();
 
         inputUpload.addEventListener("change", previewFile);
-        buttonSave.addEventListener("click", createAd);
+        buttonSave.addEventListener("click", function() {
+            updateAd(id);
+        });
+    }
+
+    function showAdPicture() {
+        let pictureValue = document.getElementById("hideImgUpdateAd");
+        if (pictureValue.src != "") {
+            pictureValue.classList.remove("hideImgUpdateAd");
+            pictureValue.classList.add("imgUpdateAd");
+        }
     }
 
     function createContent(){
@@ -181,11 +199,19 @@
       
         if (file) {
           reader.readAsDataURL(file);
-          preview.classList.remove("hideImgCreateAd");
-          preview.classList.add("imgCreateAd");
+          let pictureValue = document.getElementById("hideImgUpdateAd");
+            if (pictureValue.src != "") {
+                preview.classList.remove("hideImgUpdateAd");
+                preview.classList.add("imgUpdateAd");
+            }
         } else {
           preview.src = "";
         }
-      }
+    }
+
+    function deleteSpace(str) {
+        let array = str.split(" ").join("");
+        return array;
+    }
 
 })(SaleBoard);

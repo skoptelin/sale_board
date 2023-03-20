@@ -2,17 +2,17 @@
 
 session_start();
 
-require_once("classes/connect.php");
-require_once("classes/users/getUser.php");
-require_once("classes/users/postUser.php");
-require_once("classes/users/putUser.php");
-require_once("classes/users/deleteUser.php");
+require_once("Classes/Connect.php");
+require_once("Classes/Users/GetUser.php");
+require_once("Classes/Users/PostUser.php");
+require_once("Classes/Users/PutUser.php");
+require_once("Classes/Users/DeleteUser.php");
 
-$connect    = new connect();
-$getUser    = new getUser();
-$postUser   = new postUser();
-$putUser    = new putUser();
-$deleteUser = new deleteUser();
+$connect    = new Connect();
+$getUser    = new GetUser();
+$postUser   = new PostUser();
+$putUser    = new PutUser();
+$deleteUser = new DeleteUser();
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") { // Получить юзера с id = ... или всех юзеров
     $getUser->get();

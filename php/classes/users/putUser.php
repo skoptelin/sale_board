@@ -1,9 +1,9 @@
 <?php
 
-require_once("classes/DataBase.php");
+require_once("Classes/DataBase.php");
 
-class putUser extends exam{
-    function updateUser() {
+class PutUser extends Exam{
+    public function updateUser() {
 
         parse_str(file_get_contents("php://input"), $_PUT);
 
@@ -194,7 +194,7 @@ class putUser extends exam{
         }
     } 
 
-    function update($sqlSrting) {
+    private function update($sqlSrting) {
         parse_str(file_get_contents("php://input"), $_PUT);
         if (isset($_PUT["email"])){
             $this->isUniq($_PUT["email"]);

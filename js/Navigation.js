@@ -1,33 +1,33 @@
 (function(app) {
     app.createNav = {
         draw: function() {
-                createNav();
+            createNav();
         }
     }
 
     function createNav() {
-        let header        = document.querySelector(".header");
+        let header           = document.querySelector(".header");
 
-        let mobileNav     = addElement("div", "mobileNav", "", header);
-        let burger        = addElement("div", "burger", "", mobileNav);
+        let mobileNav        = addElement("div", "mobileNav", "", header);
+        let burger           = addElement("div", "burger", "", mobileNav);
 
-        let burgerButton  = document.createElement("button");
+        let burgerButton     = document.createElement("button");
         burgerButton.classList.add("burgerButton");
         burger.append(burgerButton);
 
-        let burgerLine1   = document.createElement("div");
-        burgerLine1.classList.add("burgerLine");
-        burgerButton.append(burgerLine1);
+        let burgerLineTop    = document.createElement("div");
+        burgerLineTop.classList.add("burgerLine");
+        burgerButton.append(burgerLineTop);
 
-        let burgerLine2   = document.createElement("div");
-        burgerLine2.classList.add("burgerLine");
-        burgerButton.append(burgerLine2);
+        let burgerLineMiddle = document.createElement("div");
+        burgerLineMiddle.classList.add("burgerLine");
+        burgerButton.append(burgerLineMiddle);
 
-        let burgerLine3   = document.createElement("div");
-        burgerLine3.classList.add("burgerLine");
-        burgerButton.append(burgerLine3);
+        let burgerLineBottom = document.createElement("div");
+        burgerLineBottom.classList.add("burgerLine");
+        burgerButton.append(burgerLineBottom);
 
-        let navList       = addElement("nav", "navList", "", mobileNav);
+        let navList          = addElement("nav", "navList", "", mobileNav);
         document.querySelector(".navList").classList.add("showNavList");
 
         let navItemAllAds = createLink("navItemSelected", "navItemAllAds", "Лента", navList);
@@ -36,9 +36,12 @@
 
         navItemAllAds.addEventListener("click", goToAdsList);
         navItemAllAds.addEventListener("click", showHideNav);
+
         navItemMyAds.addEventListener("click", goToMyAdsList);
         navItemMyAds.addEventListener("click", showHideNav);
+
         navItemExit.addEventListener("click", showPopupLogout);
+        
         burgerButton.addEventListener("click", showHideNav);
     }
 
@@ -49,11 +52,11 @@
         let popupText     = createText("popupText", "", text);
         popupBox.append(popupText);
         let buttonPopupBox = addElement("div", "buttonPopupBox", "", popupBox);
-        let buttonYes      = createButton("popupButtonYes", "popupButton", "", "Да", buttonPopupBox);
-        let buttonNo       = createButton("popupButtonNo", "popupButton", "", "Нет", buttonPopupBox);
+        let buttonAccept   = createButton("popupButtonAccept", "popupButton", "", "Да", buttonPopupBox);
+        let buttonReject   = createButton("popupButtonNo", "popupButton", "", "Нет", buttonPopupBox);
 
-        buttonNo.addEventListener("click", hidePopupDelete);
-        buttonYes.addEventListener("click", logout);
+        buttonReject.addEventListener("click", hidePopupDelete);
+        buttonAccept.addEventListener("click", logout);
     }
 
     function hidePopupDelete() {
@@ -61,11 +64,31 @@
     }
 
     async function logout() {
-        await fetch("php/logout.php");
-        document.querySelector(".header").parentNode.removeChild(document.querySelector(".header"));
-        document.querySelector(".container").parentNode.removeChild(document.querySelector(".container"));
-        app.Header.draw();
-        app.loginPage.draw();
+        try {
+            await fetch("php/Classes/Auth/Logout.php");
+            document.querySelector(".header").parentNode.removeChild(document.querySelector(".header"));
+            document.querySelector(".container").parentNode.removeChild(document.querySelector(".container"));
+            app.Header.draw();
+            app.loginPage.draw();
+        } catch (error) {
+            showPopup("Упс, что-то пошло не так! Ошибка: " + error.name.value);
+        }
+        
+    }
+
+    function showPopup(textValue) {
+        let content       = document.querySelector(".container");
+        let popupBox      = addElement("div", "popupBoxShow", "", content);
+        let popupText     = createText("popupText", "", textValue);
+        popupBox.append(popupText);
+        let buttonPopupBox = addElement("div", "buttonPopupBox", "", popupBox);
+        let buttonAccept   = createButton("popupButtonOk", "popupButtonOk", "", "OK", buttonPopupBox);
+
+        buttonAccept.addEventListener("click", hidePopup);
+    }
+
+    function hidePopup() {
+        document.querySelector(".popupBoxShow").parentNode.removeChild(document.querySelector(".popupBoxShow"));
     }
 
     function showHideNav() {

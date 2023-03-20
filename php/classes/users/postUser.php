@@ -1,10 +1,10 @@
 <?php
 
-require_once("classes/DataBase.php");
-require_once("classes/users/exam.php");
+require_once("Classes/DataBase.php");
+require_once("Classes/Users/Exam.php");
 
-class postUser extends exam{
-    function createUser() {
+class PostUser extends Exam{
+    public function createUser() {
         if(!empty ($_POST["email"] && $_POST["password"] && $_POST["name"])){
 
             $this->isUniq($_POST["email"]);
@@ -36,7 +36,7 @@ class postUser extends exam{
         }
     }
 
-    function create($sqlString){
+    private function create($sqlString){
         DataBase::query($sqlString);
         echo json_encode("true");
         exit;

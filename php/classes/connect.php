@@ -2,7 +2,7 @@
 
 require_once("DataBase.php");
 
-class connect {
+class Connect {
     function __construct(){
         DataBase::connect();
     }

@@ -1,9 +1,9 @@
 <?php
 
-require_once("classes/DataBase.php");
+require_once("Classes/DataBase.php");
 
-class exam {
-    function isUser($value){ //Проверка существует ли такой юзер
+class Exam {
+    public function isUser($value){ //Проверка существует ли такой юзер
         if (isset($_GET["id"])) {
             $query = DataBase::query("SELECT * FROM users WHERE id = $value");
             $user = [];
@@ -25,10 +25,9 @@ class exam {
                 exit;
             }
         }
-        
     }
 
-    function isUniq($email) { //Проверка является ли email уникальным
+    public function isUniq($email) { //Проверка является ли email уникальным
         $query = DataBase::query("SELECT * FROM users WHERE `email` = '{$email}'");
         $user = [];
         while ($row = DataBase::fetch($query)){ 

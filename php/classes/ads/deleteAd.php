@@ -1,9 +1,9 @@
 <?php
 
-require_once("classes/DataBase.php");
+require_once("Classes/DataBase.php");
 
-class deleteAd extends exam{
-    function delete() {
+class DeleteAd extends Exam{
+    public function delete() {
         if(isset($_GET["id"])) {
             $this->isAds($_GET["id"]);
             DataBase::query("DELETE FROM ads WHERE id = {$_GET["id"]}");
